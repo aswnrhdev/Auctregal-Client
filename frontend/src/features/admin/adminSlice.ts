@@ -1,9 +1,4 @@
-
-
-
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 interface AdminState {
     id: string | null;
     email: string | null;
@@ -18,7 +13,6 @@ const initialState: AdminState = {
     token: null,
 };
 
-// Fetch data from local storage only in the client-side
 const getLocalStorageData = () => {
     if (typeof window !== 'undefined') {
         const localStorageData = localStorage.getItem('adminData');

@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
@@ -18,7 +9,6 @@ const withAdminAuth = (WrappedComponent: React.ComponentType) => {
         const { token, role } = useSelector((state: RootState) => state.admin);
 
         useEffect(() => {
-            // Redirect if no token or role is not 'admin'
             if (!token || role !== 'admin') {
                 router.push('/admin');
             }

@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 interface SellerState {
     id: string | null;
-    name:string | null
+    name: string | null
     email: string | null;
     role: string | null;
     token: string | null;
@@ -11,7 +10,7 @@ interface SellerState {
 
 const initialState: SellerState = {
     id: null,
-    name:null,
+    name: null,
     email: null,
     role: null,
     token: null,
@@ -32,7 +31,7 @@ const sellerSlice = createSlice({
     name: 'seller',
     initialState: initialSellerState,
     reducers: {
-        setSellerData(state, action: PayloadAction<{ id: string; name:string; email: string; role: string; token: string }>) {
+        setSellerData(state, action: PayloadAction<{ id: string; name: string; email: string; role: string; token: string }>) {
             state.id = action.payload.id;
             state.name = action.payload.name;
             state.email = action.payload.email;

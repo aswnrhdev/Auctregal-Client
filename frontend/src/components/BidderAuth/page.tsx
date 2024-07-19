@@ -1,15 +1,15 @@
-
-
 import { useState, useEffect } from 'react';
 import { z } from 'zod';
 import Cookies from 'js-cookie';
 import { signupApi, verifyLoginApi, verifyOtpApi, resendOtpApi } from '@/api/bidderApi';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import { setUserData, setVerified } from '@/features/user/userSlice';
 import axios from 'axios';
-import { FcGoogle } from "react-icons/fc";
+import { SignUpForm } from '../Authentication/SignUpForm/page';
+import { OtpForm } from '../Authentication/OtpForm/page';
+import { LoginForm } from '../Authentication/LoginForm/page';
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -134,7 +134,6 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
             const response = await verifyLoginApi({ email, password });
             const { user, token } = response.data;
 
-            // Dispatch user data to Redux store
             dispatch(setUserData({
                 id: user.id,
                 name: user.name,
@@ -143,7 +142,6 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
                 token: token,
             }));
 
-            // Set the token and user data in localStorage
             if (typeof window !== 'undefined') {
                 localStorage.setItem('userData', JSON.stringify({
                     id: user.id,
@@ -179,7 +177,7 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
             await signupApi({ name, phone, email, password, confirmPassword, otp: '' });
 
             setShowOtpForm(true);
-            setTimer(60);  // Set the timer to 1 minute for OTP expiration
+            setTimer(60);
             setCanResend(false);
             setErrors(null);
         } catch (error) {
@@ -197,7 +195,7 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
             await verifyOtpApi({ otp, email });
             setShowOtpForm(false);
             setErrors(null);
-            setIsSignUp(false);  // Switch to Login Form after successful OTP
+            setIsSignUp(false);
         } catch (error) {
             setErrors("Invalid OTP or OTP has expired.");
         }
@@ -206,7 +204,7 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
     const handleResendOtp = async () => {
         try {
             await resendOtpApi(formData.email);
-            setTimer(60);  // Reset the timer to 1 minute for the new OTP
+            setTimer(60);
             setCanResend(false);
         } catch (error) {
             console.error("Error resending OTP", error);
@@ -217,7 +215,7 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
         const { email, name, id } = profile;
         try {
             console.log('reached sign up');
-            
+
             await signupApi({ name, phone: '', email, password: id, confirmPassword: id, otp: '', isGoogle: true });
             // router.push('/');
             setErrors(null);
@@ -239,15 +237,14 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
 
     const GoogleSignInData = async (profile: any) => {
         const { email, id } = profile;
-        
+
         try {
             console.log('reached login');
-            
+
 
             const response = await verifyLoginApi({ email, password: id });
             const { user, token } = response.data;
 
-            // Dispatch user data to Redux store
             dispatch(setUserData({
                 id: user.id,
                 name: user.name,
@@ -256,7 +253,6 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
                 token: token,
             }));
 
-            // Set the token and user data in localStorage
             if (typeof window !== 'undefined') {
                 localStorage.setItem('userData', JSON.stringify({
                     id: user.id,
@@ -290,13 +286,6 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
             },
             onError: (error) => console.log('Login Failed:', error)
         });
-
-
-
-
-
-
-
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -359,158 +348,4 @@ export const BidderAuth = ({ setShowAuth }: BidderAuthProps) => {
         </div>
     );
 };
-
-const SignUpForm = ({ formData, handleChange, onSubmit, errors, switchToLogin, handleGoogleSignUp }: { formData: any, handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void, onSubmit: (event: React.FormEvent) => void, errors: string | null, switchToLogin: () => void, handleGoogleSignUp: () => void }) => (
-    <div className='bg-black text-white p-4 rounded-lg'>
-        <form onSubmit={onSubmit}>
-            <div className="mb-4">
-                <label htmlFor="name" className="block text-sm ">Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder='Enter the name'
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Name is required") && <p className="text-red-500 text-sm">Name is required</p>}
-            </div>
-            <div className="mb-4">
-                <label htmlFor="email" className="block text-sm">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder='Enter the email'
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Invalid email address") && <p className="text-red-500 text-sm">Invalid email address</p>}
-            </div>
-            <div className="mb-4">
-                <label htmlFor="password" className="block text-sm ">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder='Enter the password'
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Password must be at least 6 characters long") && <p className="text-red-500 text-sm">Password must be at least 6 characters long</p>}
-            </div>
-            <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-sm">Confirm Password</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder='Enter the confirm password'
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Confirm password must be at least 6 characters long") && <p className="text-red-500 text-sm">Confirm password must be at least 6 characters long</p>}
-                {errors && errors.includes("Passwords must match") && <p className="text-red-500 text-sm">Passwords must match</p>}
-            </div>
-            <div className="mb-4">
-                {errors && <p className="text-red-500 text-sm">{errors}</p>}
-            </div>
-            <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-md  transition mt-4 mb-2"
-            >
-                Create account
-            </button>
-        </form>
-        <button
-            onClick={handleGoogleSignUp}
-            className="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-blue-400 hover:text-white transition mt-4 flex justify-center gap-2"
-        >
-            Sign Up with Google <FcGoogle className='mt-1' />
-        </button>
-        <p className="text-sm text-gray-500 mt-4 text-center">
-            Already have an account? <button onClick={switchToLogin} className="text-blue-500 hover:cursor-pointer">Login</button>
-        </p>
-    </div>
-);
-
-
-
-const LoginForm = ({ formData, handleChange, onSubmit, errors, switchToSignUp, handleGoogleSignIn }: { formData: { email: string, password: string }, handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void, onSubmit: (event: React.FormEvent) => void, errors: string | null, switchToSignUp: () => void, handleGoogleSignIn: () => void }) => (
-    <div className='bg-black text-white p-4 rounded-lg'>
-        <form onSubmit={onSubmit}>
-            <div className="mb-4">
-                <label htmlFor="email" className="block text-sm">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder='Enter the email'
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Invalid email address") && <p className="text-red-500 text-sm">Invalid email address</p>}
-            </div>
-            <div className="mb-4">
-                <label htmlFor="password" className="block text-sm">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder='Enter the password'
-                    className="mt-1 block w-full px-3 py-2 bg-white border border-white rounded-md text-black"
-                />
-                {errors && errors.includes("Password must be at least 6 characters long") && <p className="text-red-500 text-sm">Password must be at least 6 characters long</p>}
-            </div>
-            {errors && !errors.includes("Invalid email address") && !errors.includes("Password must be at least 6 characters long") && <p className="text-red-500 text-sm">{errors}</p>}
-            <div className="flex flex-col mt-6 gap-3">
-
-                <button type="submit" className="bg-blue-500 text-white rounded-md px-10 py-2 mb-2">Login</button>
-            </div>
-        </form>
-        <button
-            onClick={handleGoogleSignIn}
-            className="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-blue-400 hover:text-white transition mt-4 flex justify-center gap-2"
-        >
-            Sign In with Google <FcGoogle className='mt-1' />
-        </button>
-        <p className="text-sm text-gray-500 mt-4 text-center">
-            Don't have an account? <button onClick={switchToSignUp} className="text-blue-500 hover:cursor-pointer">Sign up</button>
-        </p>
-    </div>
-);
-
-
-
-const OtpForm = ({ formData, handleChange, onSubmit, errors, onResendOtp, canResend, timer }: any) => (
-    <form onSubmit={onSubmit} className="space-y-4">
-        <div className="mb-4">
-            <label htmlFor="otp" className="block text-white">Enter OTP</label>
-            <input
-                id="otp"
-                name="otp"
-                type="text"
-                value={formData.otp}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-white text-black rounded"
-            />
-        </div>
-        {errors && <div className="text-red-500 text-sm mb-4">{errors}</div>}
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">Verify OTP</button>
-        <div className="mt-4 text-white flex justify-between items-center">
-            <span>{canResend ? (
-                <button onClick={onResendOtp} className="text-blue-400 hover:underline">Resend OTP</button>
-            ) : (
-                `Resend OTP in ${Math.floor(timer / 60)}:${timer % 60}`
-            )}</span>
-        </div>
-    </form>
-);
 

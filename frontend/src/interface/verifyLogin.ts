@@ -1,4 +1,4 @@
-export interface verifyLogin{
-    email:string,
-    password:string
+export interface verifyLogin {
+    email: string,
+    password: string
 }

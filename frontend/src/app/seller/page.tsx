@@ -1,18 +1,11 @@
-
 'use client'
 
 import Footer from '@/components/Seller Components/Footer/Footer';
-// import Header from '@/components/Seller Components/Header/Header';
 import Header from '@/components/Header/bidderHeader';
-// import Banner from "@/components/About/Banner/banner"
-import Banner from '@/components/Seller/Banner/banner';
+import Banner from '@/components/Seller Components/Banner/banner';
 import RecentSoldItems from '@/components/Seller Components/Home/Recent Sold Section/page';
 import { useState, useEffect } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
-import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
-import { SiGmail } from "react-icons/si";
 
-// Sample data for the modal and top sold items
 const modalContent = {
     title: 'Instructions for Sellers',
     instructions: [
@@ -26,8 +19,6 @@ const modalContent = {
         { text: 'Sellers must adhere to our guidelines. Spamming or listing inappropriate items may result in a decrease in your seller score, affecting your access to the platform.', highlight: 'Seller Conduct' },
     ]
 };
-
-
 
 const Page = () => {
     const [showModal, setShowModal] = useState(false);
