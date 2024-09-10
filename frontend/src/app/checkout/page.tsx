@@ -1,3 +1,6 @@
+
+
+
 // 'use client';
 
 // import { useState, useEffect, useCallback } from 'react';
@@ -11,10 +14,30 @@
 // import GoogleMap from '@/components/Bidder Components/Checkout Page/Google Map/page';
 // import Image from 'next/image';
 
-// const Checkout = () => {
-//     const [checkoutData, setCheckoutData] = useState(null);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
+// interface CheckoutData {
+//   slipData?: {
+//     qrCode: string;
+//     slipCode: string;
+//   };
+//   itemData: {
+//     category: string;
+//     primaryImage?: string;
+//     title: string;
+//     basePrice: number;
+//     currentPrice: number;
+//     transactionStatus: string;
+//   };
+//   userData: {
+//     name: string;
+//     email: string;
+//     auctCode: string;
+//   };
+// }
+
+// const Checkout: React.FC = () => {
+//     const [checkoutData, setCheckoutData] = useState<CheckoutData | null>(null);
+//     const [loading, setLoading] = useState<boolean>(true);
+//     const [error, setError] = useState<string | null>(null);
 //     const searchParams = useSearchParams();
 //     const itemId = searchParams.get('itemId');
 //     const userId = searchParams.get('userId');
@@ -22,7 +45,7 @@
 //     const fetchCheckoutData = useCallback(async () => {
 //         setLoading(true);
 //         try {
-//             const response = await axios.get(`http://localhost:5000/checkout-data?userId=${userId}&itemId=${itemId}`);
+//             const response = await axios.get<CheckoutData>(`http://localhost:5000/checkout-data?userId=${userId}&itemId=${itemId}`);
 //             setCheckoutData(response.data);
 //         } catch (error) {
 //             console.error('Error fetching checkout data:', error);
@@ -44,18 +67,18 @@
 //         }
 
 //         try {
-//             const response = await axios.post('http://localhost:5000/generate-slip', { userId, itemId });
-//             setCheckoutData(prevData => ({
+//             const response = await axios.post<{ slip: CheckoutData['slipData'] }>('http://localhost:5000/generate-slip', { userId, itemId });
+//             setCheckoutData(prevData => prevData ? ({
 //                 ...prevData,
 //                 slipData: response.data.slip
-//             }));
+//             }) : null);
 //         } catch (error) {
 //             console.error('Error generating slip:', error);
 //             setError('Failed to generate slip. Please try again.');
 //         }
 //     };
 
-//     const formatCurrency = (amount) => {
+//     const formatCurrency = (amount: number) => {
 //         return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
 //     };
 
@@ -159,9 +182,10 @@
 // export default Checkout;
 
 
+
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Footer } from "@/components/Bidder Components/Bidder Footer/page";
 import BidderHeader from "@/components/Bidder Components/Bidder Header/page";
@@ -192,7 +216,7 @@ interface CheckoutData {
   };
 }
 
-const Checkout: React.FC = () => {
+const CheckoutContent: React.FC = () => {
     const [checkoutData, setCheckoutData] = useState<CheckoutData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -286,7 +310,7 @@ const Checkout: React.FC = () => {
                                     <span>Slip Code {checkoutData.slipData.slipCode}</span>
                                     <MdVerified className="ml-1" />
                                 </p>
-                                <p className='ml-2 pr-60'>Please verify and securely store your QR code and slip code, as they are critical components of your privacy and personal information. These codes contain sensitive details related to your bidding activities, so it is important to keep them confidential and protected. Ensure that they are not shared with unauthorized individuals to maintain the integrity and security of your data.</p>
+                                <p className='ml-2 pr-60'>Please verify and securely store your QR code and slip code...</p>
                             </div>
                         </div>
                     </div>
@@ -336,5 +360,13 @@ const Checkout: React.FC = () => {
         </>
     );
 }
+
+const Checkout: React.FC = () => {
+    return (
+        <Suspense fallback={<div className="text-center mt-24">Loading...</div>}>
+            <CheckoutContent />
+        </Suspense>
+    );
+};
 
 export default Checkout;
