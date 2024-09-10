@@ -1,7 +1,22 @@
 'use client'
 
-import { Line, Radar, Bar, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement, RadialLinearScale } from 'chart.js';
+import React from 'react';
+import { Line, Radar, Bar } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement,
+    BarElement,
+    RadialLinearScale,
+    ChartData,
+    ChartOptions
+} from 'chart.js';
 
 ChartJS.register(
     CategoryScale,
@@ -16,28 +31,27 @@ ChartJS.register(
     RadialLinearScale
 );
 
-const DashboardContent = () => {
+const DashboardContent: React.FC = () => {
     const cardsData = [
         { title: 'Profit Amount', value: '$12,345', icon: '💵' },
         { title: 'Number of Bidders', value: '150', icon: '👥' },
-        { title: 'Number of Sellers', value: '30', icon: '🛒' },
         { title: 'Total Amount Bidded', value: '$45,678', icon: '📈' },
     ];
 
-    // const lineChartData = {
-    //     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    //     datasets: [
-    //         {
-    //             label: 'Total Bids',
-    //             data: [120, 150, 180, 220, 200, 250, 270],
-    //             borderColor: '#1F2937',
-    //             backgroundColor: 'rgba(31, 41, 55, 0.1)',
-    //             fill: true,
-    //         },
-    //     ],
-    // };
+    const lineChartData: ChartData<'line'> = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [
+            {
+                label: 'Total Bids',
+                data: [120, 150, 180, 220, 200, 250, 270],
+                borderColor: '#1F2937',
+                backgroundColor: 'rgba(31, 41, 55, 0.1)',
+                fill: true,
+            },
+        ],
+    };
 
-    const radarChartData = {
+    const radarChartData: ChartData<'radar'> = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
         datasets: [
             {
@@ -49,7 +63,7 @@ const DashboardContent = () => {
         ],
     };
 
-    const areaChartData = {
+    const areaChartData: ChartData<'line'> = {
         labels: ['Online', 'Offline', 'Live'],
         datasets: [
             {
@@ -63,11 +77,11 @@ const DashboardContent = () => {
         ],
     };
 
-    const mixedChartData = {
+    const mixedChartData: ChartData<'bar'> = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
         datasets: [
             {
-                type: 'bar',
+                type: 'bar' as const,
                 label: 'Bidders',
                 data: [12, 19, 3, 5, 2, 3, 9],
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -75,16 +89,16 @@ const DashboardContent = () => {
                 borderWidth: 1,
             },
             {
-                type: 'line',
+                type: 'line' as const,
                 label: 'Trend',
                 data: [15, 12, 10, 8, 6, 4, 3],
                 fill: false,
                 borderColor: 'rgba(255, 99, 132, 1)',
-            },
+            } as any, // Type assertion to avoid type mismatch
         ],
     };
 
-    const bidsChartData = {
+    const bidsChartData: ChartData<'bar'> = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
         datasets: [
             {
@@ -95,7 +109,7 @@ const DashboardContent = () => {
         ],
     };
 
-    const sellersChartData = {
+    const sellersChartData: ChartData<'bar'> = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
         datasets: [
             {
@@ -106,10 +120,23 @@ const DashboardContent = () => {
         ],
     };
 
+    const chartOptions: ChartOptions<'bar'> = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Mixed Chart',
+            },
+        },
+    };
+
     return (
         <div className="p-6 space-y-6">
             <h1 className="text-1xl italic mb-4">Welcome back, Admin!</h1>
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-black">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-black">
                 {cardsData.map((card, index) => (
                     <div key={index} className="p-4 border border-gray-200 shadow-sm rounded-lg bg-white">
                         <div className="flex items-center gap-4">
@@ -122,44 +149,36 @@ const DashboardContent = () => {
                     </div>
                 ))}
             </div>
-            
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                 <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
                     <h2 className="text-xl font-semibold mb-4">Mode of Auction</h2>
-                    <Line data={areaChartData} options={{ fill: true }} />
+                    <Line data={areaChartData} options={chartOptions as ChartOptions<'line'>} />
                 </div>
-                
+
                 <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
                     <h2 className="text-xl font-semibold mb-4">Number of Bidders Joined</h2>
-                    <Bar data={mixedChartData} />
+                    <Bar data={mixedChartData} options={chartOptions} />
                 </div>
             </div>
 
-
-  
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               
                 <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg col-span-1">
                     <h2 className="text-xl font-semibold mb-4">Monthly Profit</h2>
-                    <Radar data={radarChartData} />
+                    <Radar data={radarChartData} options={chartOptions as ChartOptions<'radar'>} />
                 </div>
                 <div className="flex flex-col col-span-1 gap-6">
-                    
                     <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
                         <h2 className="text-xl font-semibold mb-4">Total Number of Bidders</h2>
-                        <Bar data={bidsChartData} />
+                        <Bar data={bidsChartData} options={chartOptions} />
                     </div>
-                    
+
                     <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
                         <h2 className="text-xl font-semibold mb-4">Total Number of Sellers</h2>
-                        <Bar data={sellersChartData} />
+                        <Bar data={sellersChartData} options={chartOptions} />
                     </div>
                 </div>
-            </div> */}
-
-
+            </div>
         </div>
     );
 };

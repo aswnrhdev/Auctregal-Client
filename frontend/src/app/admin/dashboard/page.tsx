@@ -1,28 +1,92 @@
+// 'use client'
+// import AdminHeader from '@/components/Admin/AdminHeader/page'
+// import AdminSlidebar from '@/components/Admin/AdminSlidebar/page'
+// import AuctionItem from '@/components/Admin/AuctionItem/page'
+// import BiddersList from '@/components/Admin/BiddersList/page'
+// import ClosedBids from '@/components/Admin/Closed Bids Page/page'
+// import DashboardContent from '@/components/Admin/DashboardContent/page'
+// import OfflineSchedule from '@/components/Admin/OfflineSchedule/page'
+// import TransactionHistory from '@/components/Admin/TransactionHistory/page'
+// import AddItem from '@/components/Admin/Add Item/page'
+// import withAdminAuth from '@/hoc/Admin/withAdminAuth'
+// import { useRouter } from 'next/navigation'
+// import { useEffect, useState } from 'react'
+// import { useSelector } from 'react-redux'
+// import { RootState } from '@/store/store'
+
+// const page = () => {
+//     const router = useRouter()
+//     const { token } = useSelector((state: RootState) => state.admin);
+
+//     useEffect(() => {
+//         if(token){
+//             router.push('/admin/dashboard')
+//         }
+//     }, [token])
+
+//     const [activeTab, setActiveTab] = useState("Dashboard");
+
+//     const renderContent = () => {
+//         switch (activeTab) {
+//             case "Dashboard":
+//                 return <DashboardContent />;
+//             case "BiddersList":
+//                 return <BiddersList />;
+//             case "ClosedBids":
+//                 return <ClosedBids />;
+//             case "OfflineSchedule":
+//                 return <OfflineSchedule />;
+//             case "AuctionItem":
+//                 return <AuctionItem />;
+//             case "Add Item":
+//                 return <AddItem />;
+//             case "TransactionHistory":
+//                 return <TransactionHistory />;
+//             default:
+//                 return <DashboardContent />;
+//         }
+//     };
+
+//     return (
+//         <div className="bg-black text-white min-h-screen">
+//             <AdminHeader />
+//             <div className="flex">
+//                 <AdminSlidebar setActiveTab={setActiveTab} activeTab={activeTab} />
+//                 <div className="flex-1 p-4">
+//                     {renderContent()}
+//                 </div>
+//             </div>
+//         </div>
+//     )
+// }
+
+// export default withAdminAuth(page);
+
 'use client'
 import AdminHeader from '@/components/Admin/AdminHeader/page'
 import AdminSlidebar from '@/components/Admin/AdminSlidebar/page'
 import AuctionItem from '@/components/Admin/AuctionItem/page'
 import BiddersList from '@/components/Admin/BiddersList/page'
-import Chat from '@/components/Admin/Chat/page'
+import ClosedBids from '@/components/Admin/Closed Bids Page/page'
 import DashboardContent from '@/components/Admin/DashboardContent/page'
 import OfflineSchedule from '@/components/Admin/OfflineSchedule/page'
-import SellersList from '@/components/Admin/SellersList/page'
 import TransactionHistory from '@/components/Admin/TransactionHistory/page'
+import AddItem from '@/components/Admin/Add Item/page'
 import withAdminAuth from '@/hoc/Admin/withAdminAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
-const page = () => {
+const Page = () => { // Changed from "page" to "Page"
     const router = useRouter()
     const { token } = useSelector((state: RootState) => state.admin);
 
     useEffect(() => {
-        if(token){
+        if (token) {
             router.push('/admin/dashboard')
         }
-    }, [token])
+    }, [token, router]) // Added "router" to dependency array
 
     const [activeTab, setActiveTab] = useState("Dashboard");
 
@@ -32,14 +96,14 @@ const page = () => {
                 return <DashboardContent />;
             case "BiddersList":
                 return <BiddersList />;
-            case "SellersList":
-                return <SellersList />;
-            case "Chat":
-                return <Chat />;
+            case "ClosedBids":
+                return <ClosedBids />;
             case "OfflineSchedule":
                 return <OfflineSchedule />;
             case "AuctionItem":
                 return <AuctionItem />;
+            case "Add Item":
+                return <AddItem />;
             case "TransactionHistory":
                 return <TransactionHistory />;
             default:
@@ -60,4 +124,4 @@ const page = () => {
     )
 }
 
-export default withAdminAuth(page);
+export default withAdminAuth(Page); // Changed from "page" to "Page"

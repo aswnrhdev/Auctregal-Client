@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 interface UserState {
     id: string | null;
-    name: string | null
+    name: string | null;
     email: string | null;
     role: string | null;
     token: string | null;
     verified?: boolean;
+    auctCode?: string | null;
 }
 
 const initialState: UserState = {
@@ -15,6 +17,7 @@ const initialState: UserState = {
     role: null,
     token: null,
     verified: false,
+    auctCode: null,
 };
 
 const getLocalStorageData = () => {
@@ -31,12 +34,13 @@ const userSlice = createSlice({
     name: 'user',
     initialState: initialUserState,
     reducers: {
-        setUserData(state, action: PayloadAction<{ id: string; name: string; email: string; role: string; token: string }>) {
+        setUserData(state, action: PayloadAction<{ id: string; name: string; email: string; role: string; token: string; auctCode?: string }>) {
             state.id = action.payload.id;
             state.name = action.payload.name;
             state.email = action.payload.email;
             state.role = action.payload.role;
             state.token = action.payload.token;
+            state.auctCode = action.payload.auctCode || null;
             if (typeof window !== 'undefined') {
                 localStorage.setItem('userData', JSON.stringify(action.payload));
             }

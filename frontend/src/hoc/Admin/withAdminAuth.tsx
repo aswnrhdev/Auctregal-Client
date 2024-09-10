@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 
 const withAdminAuth = (WrappedComponent: React.ComponentType) => {
-    return (props: any) => {
+    const HOC = (props: any) => {
         const router = useRouter();
         const { token, role } = useSelector((state: RootState) => state.admin);
 
@@ -16,7 +16,11 @@ const withAdminAuth = (WrappedComponent: React.ComponentType) => {
 
         return <WrappedComponent {...props} />;
     };
+
+    // Set a display name for the HOC component
+    HOC.displayName = `withAdminAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+    return HOC;
 };
 
 export default withAdminAuth;
-
