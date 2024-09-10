@@ -8,9 +8,8 @@ export const Banner = () => {
             <Image
                 src="/empty-auditorium-awaiting-big-performance-ahead-generated-by-ai.jpg"
                 alt="Home Banner"
-                layout="fill"
-                objectFit="cover"
-                style={{ opacity: 0.5 }}
+                fill
+                style={{ objectFit: 'cover', opacity: 0.5 }}
                 priority
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-6 text-center">

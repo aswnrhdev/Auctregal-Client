@@ -15,7 +15,6 @@ const itemSlice = createSlice({
     addItem(state, action: PayloadAction<any>) {
       state.items.push(action.payload);
     },
-    // Add other reducers as needed
   }
 });
 

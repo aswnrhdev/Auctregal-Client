@@ -110,7 +110,7 @@ const AdminLoginForm = () => {
                                     />
                                     <span
                                         className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                                        onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
+                                        onClick={() => setPasswordVisible(!passwordVisible)}
                                     >
                                         {passwordVisible ? <AiOutlineEyeInvisible className='text-white' /> : <AiOutlineEye className='text-white' />}
                                     </span>

@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export const OfflineReg = () => {
-
   const router = useRouter();
 
   const handleOfflineRoute = () => {
@@ -17,9 +16,8 @@ export const OfflineReg = () => {
         <Image
           src="/female-business-executive-giving-speech.jpg"
           alt="Home Banner"
-          layout="fill"
-          objectFit="cover"
-          style={{ opacity: 0.5 }}
+          fill
+          style={{ objectFit: 'cover', opacity: 0.5 }}
           className="absolute inset-0"
         />
       </div>
@@ -33,8 +31,10 @@ export const OfflineReg = () => {
             Register now to secure your spot and participate in this exciting event.
           </p>
         </div>
-        <button className="bg-[#747264] text-white font-thin px-6 py-2 cursor-pointer"
-          onClick={handleOfflineRoute}>
+        <button 
+          className="bg-[#747264] text-white font-thin px-6 py-2 cursor-pointer"
+          onClick={handleOfflineRoute}
+        >
           Register now
         </button>
       </div>

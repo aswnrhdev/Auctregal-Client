@@ -56,11 +56,12 @@ const BiddersList = () => {
 
     return (
         <div className="p-6">
-            <h1 className="text-1xl italic mb-4">Bidders List</h1>
+            <h1 className=" text-4xl font-thin tracking-tighter">Bidders List</h1>
+            <p className='font-thin mb-5'>It contains information about all the bidders registered in Auctregal.</p>
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white text-black border">
-                    <thead className="bg-gray-100 border-b border-gray-300">
-                        <tr className='bg-black'>
+                <table className="min-w-full text-black border">
+                    <thead className="bg-[#3C2A21] border-b border-[#3C2A21]">
+                        <tr className='bg-[#3C2A21]'>
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Name</th>
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Email</th>
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Score</th>

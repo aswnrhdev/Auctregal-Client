@@ -17,7 +17,6 @@ const withAdminAuth = (WrappedComponent: React.ComponentType) => {
         return <WrappedComponent {...props} />;
     };
 
-    // Set a display name for the HOC component
     HOC.displayName = `withAdminAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
     return HOC;

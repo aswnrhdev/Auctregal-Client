@@ -5,8 +5,6 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearAdminData } from "@/features/admin/adminSlice";
-import { AiOutlineLogout } from "react-icons/ai";
-import { RiAdminLine } from "react-icons/ri";
 import { CgMonday } from "react-icons/cg";
 import { IoIosLogOut } from "react-icons/io";
 
@@ -34,7 +32,6 @@ const AdminHeader = () => {
                                 className="w-8 h-8 text-[#E5E5CB]"
                                 
                             />
-                            {/* <p className="text-[#E5E5CB] hidden sm:block font-thin">Admin</p> */}
                         </div>
                     </div>
                     <div className="hidden md:flex items-center gap-4">

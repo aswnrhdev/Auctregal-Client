@@ -1,7 +1,5 @@
-'use client'
-
-import React from 'react';
-import { Line, Radar, Bar } from 'react-chartjs-2';
+import React, { useEffect, useState } from 'react';
+import { Line, Pie } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,10 +10,6 @@ import {
     Tooltip,
     Legend,
     ArcElement,
-    BarElement,
-    RadialLinearScale,
-    ChartData,
-    ChartOptions
 } from 'chart.js';
 
 ChartJS.register(
@@ -23,27 +17,47 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
-    BarElement,
     Title,
     Tooltip,
     Legend,
-    ArcElement,
-    RadialLinearScale
+    ArcElement
 );
 
 const DashboardContent: React.FC = () => {
+    const [dashboardData, setDashboardData] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/admin/dashboard-stats');
+                const data = await response.json();
+                setDashboardData(data);
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
+    if (!dashboardData) {
+        return <div>Loading...</div>;
+    }
+
+    const { totalUsers, totalItems, totalSlips, recentUsers, recentItems, itemsByCategory, walletChanges } = dashboardData;
+
     const cardsData = [
-        { title: 'Profit Amount', value: '$12,345', icon: '💵' },
-        { title: 'Number of Bidders', value: '150', icon: '👥' },
-        { title: 'Total Amount Bidded', value: '$45,678', icon: '📈' },
+        { title: 'Total Users', value: totalUsers, icon: '👥' },
+        { title: 'Total Items', value: totalItems, icon: '📦' },
+        { title: 'Total Slips', value: totalSlips, icon: '🧾' },
     ];
 
-    const lineChartData: ChartData<'line'> = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    const walletChangeData = {
+        labels: walletChanges.map((item: any) => `${item._id.year}-${item._id.month.toString().padStart(2, '0')}`),
         datasets: [
             {
-                label: 'Total Bids',
-                data: [120, 150, 180, 220, 200, 250, 270],
+                label: 'Wallet Balance Changes',
+                data: walletChanges.map((item: any) => item.netChange),
                 borderColor: '#1F2937',
                 backgroundColor: 'rgba(31, 41, 55, 0.1)',
                 fill: true,
@@ -51,99 +65,44 @@ const DashboardContent: React.FC = () => {
         ],
     };
 
-    const radarChartData: ChartData<'radar'> = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    const itemsByCategoryData = {
+        labels: itemsByCategory.map((item: any) => item._id),
         datasets: [
             {
-                label: 'Monthly Profit',
-                data: [65, 59, 90, 81, 56, 55, 40],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-            },
-        ],
-    };
-
-    const areaChartData: ChartData<'line'> = {
-        labels: ['Online', 'Offline', 'Live'],
-        datasets: [
-            {
-                label: 'Mode of Auction',
-                data: [45, 30, 25],
-                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                borderWidth: 1,
-                fill: true,
-            },
-        ],
-    };
-
-    const mixedChartData: ChartData<'bar'> = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [
-            {
-                type: 'bar' as const,
-                label: 'Bidders',
-                data: [12, 19, 3, 5, 2, 3, 9],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                label: 'Items by Category',
+                data: itemsByCategory.map((item: any) => item.count),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
                 borderWidth: 1,
             },
-            {
-                type: 'line' as const,
-                label: 'Trend',
-                data: [15, 12, 10, 8, 6, 4, 3],
-                fill: false,
-                borderColor: 'rgba(255, 99, 132, 1)',
-            } as any, // Type assertion to avoid type mismatch
         ],
-    };
-
-    const bidsChartData: ChartData<'bar'> = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [
-            {
-                label: 'Total Number of Bids',
-                data: [120, 140, 160, 180, 200, 220, 240],
-                backgroundColor: '#22D3EE',
-            },
-        ],
-    };
-
-    const sellersChartData: ChartData<'bar'> = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [
-            {
-                label: 'Total Number of Sellers',
-                data: [10, 12, 14, 16, 18, 20, 22],
-                backgroundColor: '#FFCE56',
-            },
-        ],
-    };
-
-    const chartOptions: ChartOptions<'bar'> = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top' as const,
-            },
-            title: {
-                display: true,
-                text: 'Mixed Chart',
-            },
-        },
     };
 
     return (
         <div className="p-6 space-y-6">
-            <h1 className="text-1xl italic mb-4">Welcome back, Admin!</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-black">
+            <div>
+                <h1 className="text-4xl font-thin tracking-tighter text-white">Admin Dashboard</h1>
+                <p className='font-thin text-white'>This is the admin dashboard, providing detailed information regarding the data.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {cardsData.map((card, index) => (
-                    <div key={index} className="p-4 border border-gray-200 shadow-sm rounded-lg bg-white">
-                        <div className="flex items-center gap-4">
+                    <div key={index} className="p-4 border border-[#3C2A21] shadow-sm rounded-lg bg-[#3C2A21]">
+                        <div className="flex items-center gap-4 font-thin text-white">
                             <span className="text-2xl">{card.icon}</span>
                             <div>
-                                <h2 className="text-lg font-semibold">{card.title}</h2>
-                                <p className="text-xl">{card.value}</p>
+                                <h2 className="text-lg font-thin">{card.title} - {card.value}</h2>
                             </div>
                         </div>
                     </div>
@@ -151,34 +110,79 @@ const DashboardContent: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
-                    <h2 className="text-xl font-semibold mb-4">Mode of Auction</h2>
-                    <Line data={areaChartData} options={chartOptions as ChartOptions<'line'>} />
+                <div className="bg-[#3C2A21] p-6 border border-[#3C2A21] shadow-sm rounded-lg">
+                    <h2 className="text-xl font-thin mb-4 text-white">Wallet Balance Changes</h2>
+                    <Line
+                        data={walletChangeData}
+                        options={{
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Net Change',
+                                        color: '#FFFFFF',
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Year-Month',
+                                        color: '#FFFFFF',
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#FFFFFF'
+                                    }
+                                }
+                            }
+                        }}
+                    />
                 </div>
 
-                <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
-                    <h2 className="text-xl font-semibold mb-4">Number of Bidders Joined</h2>
-                    <Bar data={mixedChartData} options={chartOptions} />
+                <div className="bg-[#3C2A21] p-6 border border-[#3C2A21] shadow-sm rounded-lg">
+                    <h2 className="text-xl font-thin mb-4 text-white">Items by Category</h2>
+                    <Pie
+                        data={itemsByCategoryData}
+                        options={{
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#FFFFFF'
+                                    }
+                                }
+                            }
+                        }}
+                    />
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg col-span-1">
-                    <h2 className="text-xl font-semibold mb-4">Monthly Profit</h2>
-                    <Radar data={radarChartData} options={chartOptions as ChartOptions<'radar'>} />
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-[#3C2A21] p-6 border border-[#3C2A21] shadow-sm rounded-lg">
+                    <h2 className="text-xl font-thin mb-4 text-white">Recent Users</h2>
+                    <ul className="text-white font-thin">
+                        {recentUsers.map((user: any) => (
+                            <li key={user._id} className="mb-2">
+                                {user.name} - {user.email}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-                <div className="flex flex-col col-span-1 gap-6">
-                    <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
-                        <h2 className="text-xl font-semibold mb-4">Total Number of Bidders</h2>
-                        <Bar data={bidsChartData} options={chartOptions} />
-                    </div>
 
-                    <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-lg">
-                        <h2 className="text-xl font-semibold mb-4">Total Number of Sellers</h2>
-                        <Bar data={sellersChartData} options={chartOptions} />
-                    </div>
+                <div className="bg-[#3C2A21] p-6 border border-[#3C2A21] shadow-sm rounded-lg">
+                    <h2 className="text-xl font-thin mb-4 text-white">Recent Items</h2>
+                    <ul className="text-white font-thin">
+                        {recentItems.map((item: any) => (
+                            <li key={item._id} className="mb-2">
+                                {item.title}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

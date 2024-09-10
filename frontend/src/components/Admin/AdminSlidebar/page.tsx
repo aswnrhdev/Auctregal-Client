@@ -20,10 +20,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ setActiveTab, activeTab }) 
     { name: "Dashboard" },
     { name: "BiddersList" },
     { name: "ClosedBids" },
-    // { name: "OfflineSchedule" },
     { name: "AuctionItem" },
     { name: "Add Item" },
-    // { name: "TransactionHistory" }
   ];
 
   return (
