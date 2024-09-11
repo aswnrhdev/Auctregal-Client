@@ -25,7 +25,7 @@ const Section = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await fetch('https://auctregal-client.vercel.app/items/upcoming');
+                const response = await fetch('https://auctregal.rudopedia.shop/items/upcoming');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }
