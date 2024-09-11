@@ -1,6 +1,5 @@
 'use client'
 
-import instance from '@/axios/axios';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { MdMarkEmailRead } from 'react-icons/md';
@@ -22,7 +21,8 @@ const Contact = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await instance.post('/contacts', formData);
+            await axios.post('https://auctregal.rudopedia.shop/contacts', formData);
+            // Reset the form or show a success message
             setFormData({ firstName: '', lastName: '', email: '', message: '' });
             setSuccessMessage('Contact form submitted successfully!');
             setErrorMessage('');
