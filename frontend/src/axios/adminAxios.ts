@@ -2,7 +2,7 @@ import axios from "axios";
 import { refreshToken } from "@/api/adminApi";
 
 const instance = axios.create({
-    baseURL: 'https://auctregal.rudopedia.shop'
+    baseURL: 'http://localhost:5000'
 });
 
 
