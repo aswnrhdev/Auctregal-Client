@@ -5,8 +5,6 @@ import AuctionItem from '@/components/Admin/AuctionItem/page'
 import BiddersList from '@/components/Admin/BiddersList/page'
 import ClosedBids from '@/components/Admin/Closed Bids Page/page'
 import DashboardContent from '@/components/Admin/DashboardContent/page'
-// import OfflineSchedule from '@/components/Admin/OfflineSchedule/page'
-// import TransactionHistory from '@/components/Admin/TransactionHistory/page'
 import AddItem from '@/components/Admin/Add Item/page'
 import withAdminAuth from '@/hoc/Admin/withAdminAuth'
 import { useRouter } from 'next/navigation'
@@ -14,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
-const Page = () => { // Changed from "page" to "Page"
+const Page = () => { 
     const router = useRouter()
     const { token } = useSelector((state: RootState) => state.admin);
 
@@ -22,7 +20,7 @@ const Page = () => { // Changed from "page" to "Page"
         if (token) {
             router.push('/admin/dashboard')
         }
-    }, [token, router]) // Added "router" to dependency array
+    }, [token, router]) 
 
     const [activeTab, setActiveTab] = useState("Dashboard");
 
