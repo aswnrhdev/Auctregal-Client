@@ -60,7 +60,22 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
                 </label>
                 <CardElement
                     className="p-3 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    options={{
+                        style: {
+                            base: {
+                                fontSize: '16px',
+                                color: '#424770',
+                                '::placeholder': {
+                                    color: '#a0aec0', // Customize the placeholder color
+                                },
+                            },
+                            invalid: {
+                                color: '#9e2146', // Customize invalid state color
+                            },
+                        },
+                    }}
                 />
+
             </div>
             <button
                 type="submit"
