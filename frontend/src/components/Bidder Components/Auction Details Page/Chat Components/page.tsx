@@ -37,7 +37,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ item }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/chatbot', {
+      const response = await axios.post('https://auctregal.rudopedia.shop/chatbot', {
         message: inputMessage,
         itemDetails: item
       });
