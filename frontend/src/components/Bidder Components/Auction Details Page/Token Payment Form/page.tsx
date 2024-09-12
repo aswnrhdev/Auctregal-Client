@@ -1,4 +1,5 @@
 'use client';
+
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axios from "axios";
@@ -55,24 +56,10 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-[#DCD7C9] p-8 rounded-lg shadow-lg mb-10">
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-[#DCD7C9] p-8 rounded-lg shadow-lg text-[#DCD7C9] mb-10">
             <div className="mb-6">
                 <CardElement
-                    options={{
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
-                                },
-                            },
-                            invalid: {
-                                color: '#9e2146',
-                            },
-                        },
-                    }}
-                    className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-3 border rounded-md text-[#DCD7C9] focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
             <button
