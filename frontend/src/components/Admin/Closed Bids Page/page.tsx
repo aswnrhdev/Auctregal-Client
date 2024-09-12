@@ -51,7 +51,7 @@ const ClosedBids: React.FC = () => {
     useEffect(() => {
         const fetchSlips = async () => {
             try {
-                const response = await fetch('http://auctregal.rudopedia.shop/slips');
+                const response = await fetch('https://auctregal.rudopedia.shop/slips');
                 if (response.ok) {
                     const data = await response.json();
                     setSlips(data);
@@ -68,7 +68,7 @@ const ClosedBids: React.FC = () => {
 
     const fetchSlipDetails = async (slipId: string) => {
         try {
-            const response = await fetch(`http://auctregal.rudopedia.shop/slips/${slipId}`);
+            const response = await fetch(`https://auctregal.rudopedia.shop/slips/${slipId}`);
             if (response.ok) {
                 const data: SlipDetails = await response.json();
                 setSelectedSlip(data);
@@ -85,7 +85,7 @@ const ClosedBids: React.FC = () => {
         if (!selectedSlip) return;
 
         try {
-            const response = await fetch(`http://auctregal.rudopedia.shop/slips/${selectedSlip.slipCode}/refund`, {
+            const response = await fetch(`https://auctregal.rudopedia.shop/slips/${selectedSlip.slipCode}/refund`, {
                 method: 'POST',
             });
 
@@ -112,7 +112,7 @@ const ClosedBids: React.FC = () => {
 
     const handleDownloadPDF = async (slipCode: string) => {
         try {
-            const response = await fetch(`http://auctregal.rudopedia.shop/slips/${slipCode}/pdf`, {
+            const response = await fetch(`https://auctregal.rudopedia.shop/slips/${slipCode}/pdf`, {
                 method: 'GET',
             });
 
