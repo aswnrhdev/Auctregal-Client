@@ -26,7 +26,7 @@ const UserInformation = () => {
         const fetchUserData = async () => {
             if (email) {
                 try {
-                    const response = await axios.get(`http://localhost:5000/user?email=${email}`);
+                    const response = await axios.get(`https://auctregal.rudopedia.shop/user?email=${email}`);
                     const userData = response.data;
                     setImage(userData.image || null);
                     setWalletBalance(userData.walletBalance || 0);
@@ -59,7 +59,7 @@ const UserInformation = () => {
             formData.append('email', email);
 
             try {
-                const response = await axios.post('http://localhost:5000/upload', formData, {
+                const response = await axios.post('https://auctregal.rudopedia.shop/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -87,7 +87,7 @@ const UserInformation = () => {
         setIsCancelEnabled(false);
 
         try {
-            const response = await axios.put('http://localhost:5000/user', { name, image, email });
+            const response = await axios.put('https://auctregal.rudopedia.shop/user', { name, image, email });
             dispatch(setUserData({
                 ...response.data,
                 token: response.data.token || '', // Ensure token is included
