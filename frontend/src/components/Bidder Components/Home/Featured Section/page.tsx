@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/image';
-import instance from '@/axios/axios';
 
 interface Item {
     _id: string;
@@ -30,8 +30,12 @@ export function FeaturedAuction() {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await instance.get('/items/bidding'); 
-                setItems(response.data);
+                const response = await fetch('http://localhost:5000/items/bidding');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch items');
+                }
+                const data = await response.json();
+                setItems(data);
             } catch (error) {
                 console.error('Error fetching items:', error);
             }

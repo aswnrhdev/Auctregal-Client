@@ -29,7 +29,7 @@ const DashboardContent: React.FC = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await fetch('https://auctregal.rudopedia.shop/admin/dashboard-stats');
+                const response = await fetch('http://auctregal.rudopedia.shop/admin/dashboard-stats');
                 const data = await response.json();
                 setDashboardData(data);
             } catch (error) {

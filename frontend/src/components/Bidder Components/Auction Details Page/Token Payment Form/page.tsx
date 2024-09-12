@@ -4,6 +4,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axios from "axios";
 import { useState } from "react";
+import { Oval } from 'react-loader-spinner';
 
 interface BiddingPaymentFormProps {
     clientSecret: string;
@@ -19,6 +20,7 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
     const stripe = useStripe();
     const elements = useElements() as StripeElements | null;
     const [loading, setLoading] = useState(false);
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -43,7 +45,8 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
         if (result.error) {
             alert(result.error.message);
         } else if (result.paymentIntent) {
-            const response = await axios.post('https://auctregal.rudopedia.shop/confirm-bidding-token', {
+            setPaymentSuccess(true);
+            const response = await axios.post('http://localhost:5000/confirm-bidding-token', {
                 paymentIntentId: result.paymentIntent.id
             });
             onPaymentBiddingSuccess(response.data.token);
@@ -53,36 +56,35 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-[#DCD7C9] p-8 rounded-lg shadow-lg text-[#DCD7C9] mb-10">
             <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    Card Details
-                </label>
                 <CardElement
-                    className="p-3 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    options={{
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#a0aec0', // Customize the placeholder color
-                                },
-                            },
-                            invalid: {
-                                color: '#9e2146', // Customize invalid state color
-                            },
-                        },
-                    }}
+                    className="p-3 border rounded-md text-[#DCD7C9] focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-
             </div>
             <button
                 type="submit"
-                disabled={!stripe || loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                disabled={!stripe || loading || paymentSuccess}
+                className={`w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center transition-colors duration-500 ${
+                    paymentSuccess
+                        ? 'bg-green-500 hover:bg-green-600 text-white'
+                        : 'bg-[#3F4E4F] hover:bg-[#A27B5C] text-white'
+                }`}
             >
-                {loading ? 'Processing...' : 'Pay Now'}
+                {loading ? (
+                    <Oval
+                        height={20}
+                        width={20}
+                        color="#FFFFFF"
+                        ariaLabel="loading"
+                        secondaryColor="#A27B5C"
+                        strokeWidth={2}
+                    />
+                ) : paymentSuccess ? (
+                    'Success'
+                ) : (
+                    'Pay Now'
+                )}
             </button>
         </form>
     );

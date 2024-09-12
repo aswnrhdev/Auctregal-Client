@@ -26,7 +26,7 @@ const ClosedBidding = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await fetch('https://auctregal.rudopedia.shop/items/closed');
+                const response = await fetch('http://localhost:5000/items/closed');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }

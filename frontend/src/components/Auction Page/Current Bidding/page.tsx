@@ -26,7 +26,7 @@ export function CurrentBidding() {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await fetch('https://auctregal.rudopedia.shop/items/bidding');
+                const response = await fetch('http://localhost:5000/items/bidding');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }

@@ -55,30 +55,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ clientSecret, email, onPaymen
         <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-[#DCD7C9] p-8 rounded-lg shadow-lg text-[#DCD7C9]">
             <div className="mb-6">
                 <CardElement
-                    options={{
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
-                                },
-                            },
-                            invalid: {
-                                color: '#9e2146',
-                            },
-                        },
-                    }}
-                    className="p-3 border rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-3 border rounded-md text-[#DCD7C9] focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
             <button
                 type="submit"
                 disabled={!stripe || loading || paymentSuccess}
-                className={`w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center transition-colors duration-500 ${paymentSuccess
+                className={`w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center transition-colors duration-500 ${
+                    paymentSuccess
                         ? 'bg-green-500 hover:bg-green-600 text-white'
                         : 'bg-[#3F4E4F] hover:bg-[#A27B5C] text-white'
-                    }`}
+                }`}
             >
                 {loading ? (
                     <Oval

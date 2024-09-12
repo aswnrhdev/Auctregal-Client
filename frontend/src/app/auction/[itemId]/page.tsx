@@ -80,7 +80,7 @@ const ItemDetails: React.FC = () => {
     useEffect(() => {
         const fetchItemDetails = async () => {
             try {
-                const response = await fetch(`https://auctregal.rudopedia.shop/items/${itemId}`);
+                const response = await fetch(`http://localhost:5000/items/${itemId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch item details');
                 }
@@ -139,7 +139,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('https://auctregal.rudopedia.shop/verify-winner', {
+            const response = await axios.post('http://localhost:5000/verify-winner', {
                 email: userEmail,
                 token: biddingToken,
                 itemId: item._id
@@ -159,7 +159,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('https://auctregal.rudopedia.shop/complete-auction-payment', {
+            const response = await axios.post('http://localhost:5000/complete-auction-payment', {
                 itemId: item._id,
                 email: userData.email
             });
@@ -176,7 +176,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('https://auctregal.rudopedia.shop/confirm-auction-payment', {
+            const response = await axios.post('http://localhost:5000/confirm-auction-payment', {
                 paymentIntentId,
                 itemId: item._id,
                 email: userData.email
@@ -233,7 +233,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('https://auctregal.rudopedia.shop/generate-bidding-token', {
+            const response = await axios.post('http://localhost:5000/generate-bidding-token', {
                 email,
                 itemId: item._id
             });
@@ -566,7 +566,8 @@ const ItemDetails: React.FC = () => {
 
 
             <div className="mt-10 px-20 flex flex-col items-center">
-                <h3 className="text-2xl font-semibold mb-4">Generate Bidding Key</h3>
+                <h3 className="text-4xl font-thin">Generate Bidding Key</h3>
+                <p className='font-thin mb-5'>Please provide your email to continue with the payment process</p>
                 {!biddingToken ? (
                     <>
                         <form onSubmit={handleGenerateToken} className="mb-4">
@@ -578,7 +579,7 @@ const ItemDetails: React.FC = () => {
                                 required
                                 className="px-3 py-2 border rounded mr-2 text-black"
                             />
-                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none">
+                            <button type="submit" className="bg-orange-800 text-white py-2 px-4 rounded hover:bg-orange-950 focus:outline-none transition-colors duration-500">
                                 Generate
                             </button>
                         </form>

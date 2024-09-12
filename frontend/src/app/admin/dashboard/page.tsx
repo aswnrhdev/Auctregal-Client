@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
-const Page = () => { 
+const Page = () => { // Changed from "page" to "Page"
     const router = useRouter()
     const { token } = useSelector((state: RootState) => state.admin);
 
@@ -20,7 +20,7 @@ const Page = () => {
         if (token) {
             router.push('/admin/dashboard')
         }
-    }, [token, router]) 
+    }, [token, router]) // Added "router" to dependency array
 
     const [activeTab, setActiveTab] = useState("Dashboard");
 
