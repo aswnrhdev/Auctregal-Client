@@ -46,7 +46,7 @@ const BiddingPaymentForm: React.FC<BiddingPaymentFormProps> = ({ clientSecret, e
             alert(result.error.message);
         } else if (result.paymentIntent) {
             setPaymentSuccess(true);
-            const response = await axios.post('http://localhost:5000/confirm-bidding-token', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/confirm-bidding-token', {
                 paymentIntentId: result.paymentIntent.id
             });
             onPaymentBiddingSuccess(response.data.token);
