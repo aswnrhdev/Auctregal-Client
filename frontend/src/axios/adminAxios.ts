@@ -2,7 +2,7 @@ import axios from "axios";
 import { refreshToken } from "@/api/adminApi";
 
 const instance = axios.create({
-    baseURL: 'http://auctregal.rudopedia.shop'
+    baseURL: 'https://auctregal.rudopedia.shop'
 });
 
 
