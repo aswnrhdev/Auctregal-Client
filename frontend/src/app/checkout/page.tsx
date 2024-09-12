@@ -42,7 +42,7 @@ const CheckoutContent: React.FC = () => {
     const fetchCheckoutData = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await axios.get<CheckoutData>(`http://localhost:5000/checkout-data?userId=${userId}&itemId=${itemId}`);
+            const response = await axios.get<CheckoutData>(`https://auctregal.rudopedia.shop/checkout-data?userId=${userId}&itemId=${itemId}`);
             setCheckoutData(response.data);
         } catch (error) {
             console.error('Error fetching checkout data:', error);
@@ -64,7 +64,7 @@ const CheckoutContent: React.FC = () => {
         }
 
         try {
-            const response = await axios.post<{ slip: CheckoutData['slipData'] }>('http://localhost:5000/generate-slip', { userId, itemId });
+            const response = await axios.post<{ slip: CheckoutData['slipData'] }>('https://auctregal.rudopedia.shop/generate-slip', { userId, itemId });
             setCheckoutData(prevData => prevData ? ({
                 ...prevData,
                 slipData: response.data.slip
