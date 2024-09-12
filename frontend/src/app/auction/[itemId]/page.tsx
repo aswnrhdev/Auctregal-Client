@@ -53,7 +53,8 @@ interface PaymentHistory {
     paidAt: string;
 }
 
-const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+// const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const ItemDetails: React.FC = () => {
     const [item, setItem] = useState<Item | null>(null);
