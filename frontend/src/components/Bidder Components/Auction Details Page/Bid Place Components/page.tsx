@@ -40,7 +40,7 @@ const BiddingForm: React.FC<BiddingFormProps> = ({ itemId, basePrice, currentPri
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:5000/validate-bidding-token', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/validate-bidding-token', {
                 itemId,
                 token: biddingToken,
                 email: userEmail
@@ -71,7 +71,7 @@ const BiddingForm: React.FC<BiddingFormProps> = ({ itemId, basePrice, currentPri
         const bidAmount = calculateBidAmount(selectedPercentage);
 
         try {
-            const response = await axios.post('http://localhost:5000/place-bid', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/place-bid', {
                 itemId,
                 token: biddingToken,
                 email: userEmail,
