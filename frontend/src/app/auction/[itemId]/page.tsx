@@ -737,7 +737,7 @@ const ItemDetails: React.FC = () => {
     useEffect(() => {
         const fetchItemDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/items/${itemId}`);
+                const response = await fetch(`https://auctregal.rudopedia.shop/items/${itemId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch item details');
                 }
@@ -796,7 +796,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('http://localhost:5000/verify-winner', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/verify-winner', {
                 email: userEmail,
                 token: biddingToken,
                 itemId: item._id
@@ -830,7 +830,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('http://localhost:5000/complete-auction-payment', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/complete-auction-payment', {
                 itemId: item._id,
                 email: userData.email
             });
@@ -847,7 +847,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('http://localhost:5000/confirm-auction-payment', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/confirm-auction-payment', {
                 paymentIntentId,
                 itemId: item._id,
                 email: userData.email
@@ -917,7 +917,7 @@ const ItemDetails: React.FC = () => {
         if (!item) return;
 
         try {
-            const response = await axios.post('http://localhost:5000/generate-bidding-token', {
+            const response = await axios.post('https://auctregal.rudopedia.shop/generate-bidding-token', {
                 email,
                 itemId: item._id
             });
