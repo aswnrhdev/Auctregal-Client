@@ -225,9 +225,12 @@ import Swal from 'sweetalert2';
 
 interface Bid {
     itemTitle: string;
+    category: string;
     bidStatus: string;
+    bidResult: string;
     transactionStatus: string;
-    bidAmount: number | null;
+    bidAmount: string;
+    hasBiddingToken: boolean;
 }
 
 const UserInformation = () => {
@@ -235,10 +238,10 @@ const UserInformation = () => {
     const user = useSelector((state: RootState) => state.user);
 
     const [image, setImage] = useState<string | null>(null);
-    const [walletBalance, setWalletBalance] = useState<number | null>(null);
+    const [walletBalance, setWalletBalance] = useState<string>('');
     const [isEditing, setIsEditing] = useState(false);
     const [isCancelEnabled, setIsCancelEnabled] = useState(false);
-    const [biddingHistory, setBiddingHistory] = useState([]);
+    const [biddingHistory, setBiddingHistory] = useState<Bid[]>([]);
 
     const dispatch = useDispatch();
     const { id, name, email, auctCode } = user;
@@ -250,7 +253,7 @@ const UserInformation = () => {
                     const response = await axios.get(`https://auctregal.rudopedia.shop/user?email=${email}`);
                     const userData = response.data;
                     setImage(userData.image || null);
-                    setWalletBalance(userData.walletBalance || 0);
+                    setWalletBalance(userData.walletBalance || '0');
                     setBiddingHistory(userData.biddingHistory || []);
                     dispatch(setUserData({
                         id: userData._id,
@@ -440,7 +443,9 @@ const UserInformation = () => {
                             <thead>
                                 <tr className="border-b border-[#A27B5C]">
                                     <th className="py-2 px-4 text-left font-thin">Item Name</th>
+                                    <th className="py-2 px-4 text-left font-thin">Category</th>
                                     <th className="py-2 px-4 text-left font-thin">Bid Status</th>
+                                    <th className="py-2 px-4 text-left font-thin">Bid Result</th>
                                     <th className="py-2 px-4 text-left font-thin">Transaction Status</th>
                                     <th className="py-2 px-4 text-left font-thin">Bid Amount</th>
                                 </tr>
@@ -449,9 +454,11 @@ const UserInformation = () => {
                                 {biddingHistory.map((bid, index) => (
                                     <tr key={index} className="border-b border-[#A27B5C] font-thin">
                                         <td className="py-2 px-4">{bid.itemTitle}</td>
+                                        <td className="py-2 px-4">{bid.category}</td>
                                         <td className="py-2 px-4">{bid.bidStatus}</td>
+                                        <td className="py-2 px-4">{bid.bidResult}</td>
                                         <td className="py-2 px-4">{bid.transactionStatus}</td>
-                                        <td className="py-2 px-4">{bid.bidAmount ? `${bid.bidAmount.toLocaleString()}` : 'N/A'}</td>
+                                        <td className="py-2 px-4">{bid.bidAmount}</td>
                                     </tr>
                                 ))}
                             </tbody>
