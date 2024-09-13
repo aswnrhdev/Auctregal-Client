@@ -41,6 +41,7 @@
     "react-ui-table-component": "^1.0.0",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.14.0",
     "swiper": "^11.1.4",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
