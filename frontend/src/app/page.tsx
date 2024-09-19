@@ -11,7 +11,7 @@ import Contact from "@/components/Bidder Components/Home/Contact Form/page";
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <HomeTopBar />
+      {/* <HomeTopBar /> */}
       <BidderHeader />
       <Banner />
       <AboutSection />
