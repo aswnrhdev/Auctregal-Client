@@ -14,7 +14,7 @@ export const OfflineReg = () => {
     <div className="relative w-full bg-[#3C3633]">
       <div className="relative w-full h-[630px]">
         <Image
-          src="/female-business-executive-giving-speech.jpg"
+          src="/empty-auditorium-awaiting-big-performance-ahead-generated-by-ai.jpg"
           alt="Home Banner"
           fill
           style={{ objectFit: 'cover', opacity: 0.5 }}
