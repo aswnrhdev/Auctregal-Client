@@ -121,18 +121,11 @@ import Image from 'next/image';
 interface Item {
     _id: string;
     title?: string;
-    make?: string;
-    model?: string;
     name?: string;
-    category: string;
-    basePrice: number;
-    currentStatus: string;
     primaryImage: string;
-    description: string;
 }
 
 export function FeaturedAuction() {
-
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
@@ -145,19 +138,11 @@ export function FeaturedAuction() {
                 }
                 const data = await response.json();
                 console.log('Fetched data:', data);
-                
-                // Check if data is an array
-                if (!Array.isArray(data)) {
+                if (Array.isArray(data)) {
+                    setItems(data);
+                } else {
                     console.error('Fetched data is not an array:', data);
-                    return;
                 }
-                
-                // Log each item's primaryImage
-                data.forEach((item, index) => {
-                    console.log(`Item ${index} primaryImage:`, item.primaryImage);
-                });
-                
-                setItems(data);
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
@@ -165,6 +150,14 @@ export function FeaturedAuction() {
 
         fetchItems();
     }, []);
+
+    const cleanImageUrl = (url: string) => {
+        const s3Prefix = 'https://auctregal.s3.eu-north-1.amazonaws.com/';
+        if (url.startsWith(s3Prefix + s3Prefix)) {
+            return url.replace(s3Prefix + s3Prefix, s3Prefix);
+        }
+        return url;
+    };
 
     const settings = {
         infinite: true,
@@ -180,15 +173,11 @@ export function FeaturedAuction() {
         responsive: [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                }
+                settings: { slidesToShow: 2 },
             },
             {
                 breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                }
+                settings: { slidesToShow: 1 },
             },
         ],
     };
@@ -208,11 +197,10 @@ export function FeaturedAuction() {
                             <div key={item._id} className="relative flex items-center justify-center cursor-pointer px-2">
                                 <div className="relative w-full h-[300px] sm:h-[400px] overflow-hidden rounded-lg shadow-lg">
                                     <Image
-                                        src={`https://auctregal.s3.eu-north-1.amazonaws.com/${item.primaryImage}`}
-                                        alt={item.title || item.name || item.make || ''}
-                                        layout="fill"
-                                        objectFit="cover"
-                                        className="transition-opacity duration-500 ease-in-out"
+                                        src={cleanImageUrl(item.primaryImage)}
+                                        alt={item.title || 'Auction Item'}
+                                        width={500} // Adjust as needed
+                                        height={500} // Adjust as needed
                                     />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                         <h2 className="text-lg sm:text-xl font-thin mb-2">
