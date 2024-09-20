@@ -1,4 +1,4 @@
-// /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 // const nextConfig = {
 //     images: {
 //       domains: ['auctregal.s3.eu-north-1.amazonaws.com'], // Add the S3 domain here
@@ -17,6 +17,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    // Optional: increase the default image loader timeout
     loader: 'default',
     domains: ['auctregal.s3.eu-north-1.amazonaws.com'],
   },

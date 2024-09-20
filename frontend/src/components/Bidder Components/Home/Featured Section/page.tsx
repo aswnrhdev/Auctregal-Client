@@ -108,7 +108,9 @@
 //     );
 // }
 
-'use client'
+
+
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
@@ -130,6 +132,7 @@ interface Item {
 }
 
 export function FeaturedAuction() {
+
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
@@ -141,6 +144,10 @@ export function FeaturedAuction() {
                 }
                 const data = await response.json();
                 setItems(data);
+                console.log(data.primaryImage);
+                console.log('data is in above');
+                
+                
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
@@ -201,6 +208,7 @@ export function FeaturedAuction() {
                                         <h2 className="text-lg sm:text-xl font-thin mb-2">
                                             {item.name || item.title || `${item.make} ${item.model}`}
                                         </h2>
+
                                         <p className="font-thin text-xs sm:text-base mb-2">{item.description}</p>
                                         <p className="font-thin text-xs sm:text-base">{item.category}</p>
                                     </div>
