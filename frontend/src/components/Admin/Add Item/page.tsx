@@ -4,6 +4,7 @@ import { addItem } from '@/features/item/itemSlice';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import instance from '@/axios/adminAxios';
+import axios from 'axios';
 
 const categories = [
   'Art and Antiques',
@@ -115,7 +116,7 @@ const AddItem: React.FC = () => {
     });
 
     try {
-      const response = await instance.post('/admin/add-item', formDataToSend, {
+      const response = await axios.post('https://auctregal.rudopedia.shop/admin/add-item', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
