@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  images: {
-    domains: ['auctregal.s3.eu-north-1.amazonaws.com'],
-  },
-};
-
+const nextConfig = {
+    images: {
+      domains: ['auctregal.s3.eu-north-1.amazonaws.com'], // Add the S3 domain here
+    },
+  };
+  
+  export default nextConfig;
   
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {

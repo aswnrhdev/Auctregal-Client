@@ -121,28 +121,29 @@ import Image from 'next/image';
 interface Item {
     _id: string;
     title?: string;
+    make?: string;
+    model?: string;
     name?: string;
+    category: string;
+    basePrice: number;
+    currentStatus: string;
     primaryImage: string;
+    description: string;
 }
 
 export function FeaturedAuction() {
+
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                console.log('Fetching items...');
                 const response = await fetch('https://auctregal.rudopedia.shop/items/bidding');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }
                 const data = await response.json();
-                console.log('Fetched data:', data);
-                if (Array.isArray(data)) {
-                    setItems(data);
-                } else {
-                    console.error('Fetched data is not an array:', data);
-                }
+                setItems(data);
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
@@ -159,6 +160,7 @@ export function FeaturedAuction() {
         return url;
     };
 
+
     const settings = {
         infinite: true,
         speed: 3000,
@@ -173,11 +175,15 @@ export function FeaturedAuction() {
         responsive: [
             {
                 breakpoint: 1024,
-                settings: { slidesToShow: 2 },
+                settings: {
+                    slidesToShow: 2,
+                }
             },
             {
                 breakpoint: 768,
-                settings: { slidesToShow: 1 },
+                settings: {
+                    slidesToShow: 1,
+                }
             },
         ],
     };
@@ -198,9 +204,10 @@ export function FeaturedAuction() {
                                 <div className="relative w-full h-[300px] sm:h-[400px] overflow-hidden rounded-lg shadow-lg">
                                     <Image
                                         src={cleanImageUrl(item.primaryImage)}
-                                        alt={item.title || 'Auction Item'}
-                                        width={500} // Adjust as needed
-                                        height={500} // Adjust as needed
+                                        alt={item.title || item.name || item.make || ''}
+                                        layout="fill"
+                                        objectFit="cover"
+                                        className="transition-opacity duration-500 ease-in-out"
                                     />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                         <h2 className="text-lg sm:text-xl font-thin mb-2">
