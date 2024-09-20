@@ -1199,15 +1199,15 @@ const ItemDetails: React.FC = () => {
             ) : (
                 <>
                     <div>
-                        <h2 className="text-base md:text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
-                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#2C3639]'>
+                        <h2 className="text-base md:text-lg text-center text-[#DCD7C9]">Complete Your Purchase</h2>
+                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#DCD7C9]'>
                             Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.
                         </p>
                     </div>
-                    <p className='text-center pt-6 md:pt-8 text-[#2C3639] text-lg md:text-xl'>
+                    <p className='text-center pt-6 md:pt-8 text-[#DCD7C9] text-lg md:text-xl'>
                         Payment Step - {currentPaymentStep + 1} of {paymentSteps.length}
                     </p>
-                    <p className='text-center text-[#2C3639] pb-4 md:pb-6'>
+                    <p className='text-center text-[#DCD7C9] pb-4 md:pb-6'>
                         Amount - {formatPrice(paymentSteps[currentPaymentStep].amount)}
                     </p>
                     <Elements stripe={stripePromise}>
