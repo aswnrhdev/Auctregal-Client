@@ -1184,8 +1184,8 @@ const ItemDetails: React.FC = () => {
             ) : paymentSteps.length === 0 ? (
                 <div className="flex flex-col justify-center items-center h-full mt-5 gap-4 md:gap-5">
                     <div>
-                        <h2 className="text-base md:text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
-                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#2C3639]'>
+                        <h2 className="text-base md:text-lg text-center text-[#DCD7C9]">Complete Your Purchase</h2>
+                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#DCD7C9]'>
                             Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.
                         </p>
                     </div>
