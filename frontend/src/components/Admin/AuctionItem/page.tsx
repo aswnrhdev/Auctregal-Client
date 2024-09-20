@@ -68,7 +68,14 @@ const ItemTable: React.FC<ItemTableProps> = ({ category, items, onSetUpcoming, o
                         <tr key={index}>
                             <td className="border border-gray-300 p-2">
                                 {item.primaryImage && (
-                                    <Image src={item.primaryImage} alt={item.title} width={64} height={64} className="object-cover" />
+                                    <img
+                                        src={item.primaryImage}
+                                        alt={item.title}
+                                        width={64}
+                                        height={64}
+                                        className="object-cover"
+                                    />
+
                                 )}
                             </td>
                             {category === 'Upcoming' ? (
@@ -144,18 +151,18 @@ const AuctionItem = () => {
                     return { category, items: response.data };
                 })
             );
-    
+
             const itemsByCategory: Record<string, any[]> = {};
             results.forEach(({ category, items }) => {
                 itemsByCategory[category] = items;
             });
-    
+
             setItems(itemsByCategory);
         } catch (error) {
             console.error('Error fetching items:', error);
         }
     }, []);  // Remove `categories` from the dependency array
-    
+
 
     const fetchUpcomingItems = useCallback(async () => {
         try {
