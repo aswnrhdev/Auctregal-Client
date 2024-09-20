@@ -17,7 +17,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    // Optional: increase the default image loader timeout
     loader: 'default',
     domains: ['auctregal.s3.eu-north-1.amazonaws.com'],
   },
