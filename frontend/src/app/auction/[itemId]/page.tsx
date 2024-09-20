@@ -16,6 +16,7 @@
 // import PaymentForm from '@/components/Bidder Components/Auction Details Page/Payment Form/page';
 // import { GiTakeMyMoney } from "react-icons/gi";
 // import Image from 'next/image';
+// import Swal from 'sweetalert2';
 
 // // Define types for your data structures
 // interface Item {
@@ -33,7 +34,7 @@
 //     transaction?: {
 //         status: string;
 //     };
-//     [key: string]: any; // For dynamic fields based on category
+//     [key: string]: any;
 // }
 
 // interface Bidder {
@@ -147,7 +148,21 @@
 //             if (response.data.verified) {
 //                 setIsWinner(true);
 //             } else {
-//                 alert('Verification failed. Please check your email and token.');
+//                 // alert('Verification failed. Please check your email and token.');
+
+//                 Swal.fire({
+//                     toast: true,
+//                     position: 'top',
+//                     text: 'Verification failed. Please check your email and token.',
+//                     showConfirmButton: false,
+//                     timer: 2000,
+//                     background: 'black',
+//                     color: 'white',
+//                     customClass: {
+//                         popup: 'swal-toast',
+//                         title: 'swal-toast-title'
+//                     }
+//                 });
 //             }
 //         } catch (error) {
 //             console.error('Error verifying winner:', error);
@@ -186,7 +201,20 @@
 //                 setCurrentPaymentStep(currentPaymentStep + 1);
 //                 setClientSecret(response.data.nextStep.clientSecret);
 //                 setPaymentHistory(response.data.paymentHistory);
-//                 alert(`Payment step ${currentPaymentStep + 1} successful. Please proceed with the next payment.`);
+//                 // alert(`Payment step ${currentPaymentStep + 1} successful. Please proceed with the next payment.`);
+//                 Swal.fire({
+//                     toast: true,
+//                     position: 'top',
+//                     text: `Payment step ${currentPaymentStep + 1} successful. Please proceed with the next payment.`,
+//                     showConfirmButton: false,
+//                     timer: 2000,
+//                     background: 'black',
+//                     color: 'white',
+//                     customClass: {
+//                         popup: 'swal-toast',
+//                         title: 'swal-toast-title'
+//                     }
+//                 });
 //             }
 
 //             if (response.data.paymentCompleted) {
@@ -247,11 +275,28 @@
 
 //     const handleBiddingPaymentSuccess = (token: string) => {
 //         setBiddingToken(token);
-//         alert('Bidding token generated successfully!');
+//         // alert('Bidding token generated successfully!');
+//         Swal.fire({
+//             toast: true,
+//             position: 'top',
+//             text: 'Bidding token generated successfully!',
+//             showConfirmButton: false,
+//             timer: 2000,
+//             background: 'black',
+//             color: 'white',
+//             customClass: {
+//                 popup: 'swal-toast',
+//                 title: 'swal-toast-title'
+//             }
+//         });
 //     };
 
 //     if (loading) {
-//         return <div>Loading...</div>;
+//         return (
+//             <div className="flex items-center justify-center h-screen">
+//                 <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-black"></div>
+//             </div>
+//         );
 //     }
 
 //     if (!item) {
@@ -645,15 +690,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -710,7 +746,7 @@ interface PaymentHistory {
     paidAt: string;
 }
 
-const stripePromise = loadStripe("pk_test_51OT0m1SBqQNmRFp2b1HOsHjUjMB7f2ht4EnZ5saT9hXCq5xjH61VvvMm49AH34T5aLELQ8FuavwoUzP57ClDkv6l00VlNLXNGv");
+const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
 
 const ItemDetails: React.FC = () => {
     const [item, setItem] = useState<Item | null>(null);
@@ -1005,59 +1041,184 @@ const ItemDetails: React.FC = () => {
 
 
 
+    // const renderClosedBidding = () => {
+    //     const topThreeBidders = item.bidders
+    //         ? [...item.bidders].sort((a, b) => b.bidAmount - a.bidAmount).slice(0, 3)
+    //         : [];
+
+    //     return (
+    //         <div className="p-10 bg-[#361500]">
+    //             <h1 className="text-center text-5xl text-[#EDE4E0] font-thin mb-6">
+    //                 Bidding Closed for {item.title}
+    //             </h1>
+    //             <p className="text-center text-sm text-[#EDE4E0] pr-16 pl-16 mb-4 font-thin">
+    //                 {item.description}
+    //             </p>
+
+    //             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 items-center">
+    //                 <div>
+    //                     <div className="relative w-full h-[250px]"> {/* Container for the image */}
+    //                         <Image
+    //                             src={item.primaryImage}
+    //                             alt={item.title}
+    //                             layout="fill" // Makes the image fill the container
+    //                             objectFit="cover" // Ensures the image covers the container with proper aspect ratio
+    //                             className="rounded-lg shadow-lg"
+    //                             priority={true} // Prioritize the image for fast loading
+    //                         />
+    //                     </div>
+    //                 </div>
+    //                 <div className="text-left lg:text-left text-[#EDE4E0] pr-5 lg:pr-16 pl-5 lg:pl-16 font-light">
+    //                     <p className="mb-2">
+    //                         The item <span className="font-semibold">{item.title}</span> categorized under <span className="font-semibold">{item.category}</span>, opened for bidding at a base price of ₹{item.basePrice.toLocaleString('en-IN')}.
+    //                         {winningBidder ? (
+    //                             <>
+    //                                 It was successfully sold for ₹{winningBidder.bidAmount.toLocaleString('en-IN')} to the highest bidder, <span className="font-semibold">{winningBidder.name}</span>. Congratulations to <span className="font-semibold">{winningBidder.name}</span> for winning the item on the Auctregal platform!
+    //                             </>
+    //                         ) : (
+    //                             <>
+    //                                 The auction has closed, but information about the winning bidder is not available.
+    //                             </>
+    //                         )}
+    //                     </p>
+    //                 </div>
+    //             </div>
+
+    //             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10 p-8 bg-[#1C0A00] rounded-lg shadow-lg">
+    //                 <div className="flex flex-col justify-center font-thin">
+    //                     <p className="text-3xl text-[#EDE4E0] mb-4 font-thin">Detailed Item Information</p>
+    //                     {renderFields()}
+    //                 </div>
+    //                 <div className="flex flex-col justify-center font-thin">
+    //                     <p className="text-3xl text-[#EDE4E0] mb-4 font-thin">Auction Information</p>
+    //                     <p className="text-[#EDE4E0] mb-2">Final Price: ₹{item.currentPrice?.toLocaleString('en-IN') || 'N/A'}</p>
+    //                     <p className="text-[#EDE4E0] mb-2">Total Bids: {item.bidders?.length || 'N/A'}</p>
+    //                     <p className="text-[#EDE4E0] mb-2">Auction End Date: {new Date(item.bidEndTime).toLocaleDateString()}</p>
+    //                     <p className="text-lg text-[#EDE4E0] mt-6">Top 3 Bidders</p>
+    //                     {topThreeBidders.length > 0 ? (
+    //                         <table className="w-full mt-4 border-collapse">
+    //                             <thead>
+    //                                 <tr className="text-left border-b border-[#DCD7C9]">
+    //                                     <th className="px-4 py-2 text-[#DCD7C9] font-thin">Rank</th>
+    //                                     <th className="px-4 py-2 text-[#DCD7C9] font-thin">Name</th>
+    //                                     <th className="px-4 py-2 text-[#DCD7C9] font-thin">Bid Amount</th>
+    //                                 </tr>
+    //                             </thead>
+    //                             <tbody>
+    //                                 {topThreeBidders.map((bidder, index) => (
+    //                                     <tr key={bidder.userId} className="border-b last:border-none border-[#DCD7C9]">
+    //                                         <td className="px-4 py-2 text-[#DCD7C9] font-thin">{index + 1}</td>
+    //                                         <td className="px-4 py-2 text-[#DCD7C9] font-thin">{bidder.name}</td>
+    //                                         <td className="px-4 py-2 text-[#DCD7C9] font-thin">₹{bidder.bidAmount.toLocaleString('en-IN')}</td>
+    //                                     </tr>
+    //                                 ))}
+    //                             </tbody>
+    //                         </table>
+    //                     ) : (
+    //                         <p className="text-lg text-[#DCD7C9]">No bidders</p>
+    //                     )}
+    //                 </div>
+    //             </div>
+
+    //             {isWinner && renderPaymentSection()}
+
+    //             {!isWinner && userData.email === winningBidder?.email && (
+    //                 <div className="mt-10">
+    //                     <h2 className="text-2xl font-semibold mb-3">Verify Your Win</h2>
+    //                     <div className="flex flex-col lg:flex-row gap-4 items-center">
+    //                         <input
+    //                             type="email"
+    //                             value={userEmail}
+    //                             onChange={(e) => setUserEmail(e.target.value)}
+    //                             placeholder="Enter your email"
+    //                             className="px-3 py-2 border rounded text-black lg:w-1/3"
+    //                         />
+    //                         <input
+    //                             type="text"
+    //                             value={biddingToken}
+    //                             onChange={(e) => setBiddingToken(e.target.value)}
+    //                             placeholder="Enter your bidding token"
+    //                             className="px-3 py-2 border rounded text-black lg:w-1/3"
+    //                         />
+    //                         <button
+    //                             onClick={handleVerification}
+    //                             className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none"
+    //                         >
+    //                             Verify
+    //                         </button>
+    //                     </div>
+    //                 </div>
+    //             )}
+    //         </div>
+    //     );
+    // };
+
+
     const renderClosedBidding = () => {
         const topThreeBidders = item.bidders
             ? [...item.bidders].sort((a, b) => b.bidAmount - a.bidAmount).slice(0, 3)
             : [];
-
+    
         return (
-            <div className="p-10 bg-[#361500]">
-                <h1 className="text-center text-5xl text-[#EDE4E0] font-thin mb-6">
+            <div className="p-6 md:p-10 bg-[#361500]">
+                <h1 className="text-center text-2xl sm:text-3xl md:text-5xl text-[#EDE4E0] font-thin mb-4 md:mb-6">
                     Bidding Closed for {item.title}
                 </h1>
-                <p className="text-center text-sm text-[#EDE4E0] pr-16 pl-16 mb-4 font-thin">
+                <p className="text-center text-xs sm:text-sm md:text-base text-[#EDE4E0] px-4 md:px-16 mb-4 font-thin">
                     {item.description}
                 </p>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 items-center">
+    
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-6 items-center">
                     <div>
-                        <div className="relative w-full h-[250px]"> {/* Container for the image */}
+                        <div className="relative w-full h-[200px] sm:h-[250px] md:h-[300px]">
+                            {/* Image Container */}
                             <Image
                                 src={item.primaryImage}
                                 alt={item.title}
-                                layout="fill" // Makes the image fill the container
-                                objectFit="cover" // Ensures the image covers the container with proper aspect ratio
+                                layout="fill"
+                                objectFit="cover"
                                 className="rounded-lg shadow-lg"
-                                priority={true} // Prioritize the image for fast loading
+                                priority={true}
                             />
                         </div>
                     </div>
-                    <div className="text-left lg:text-left text-[#EDE4E0] pr-5 lg:pr-16 pl-5 lg:pl-16 font-light">
-                        <p className="mb-2">
-                            The item <span className="font-semibold">{item.title}</span> categorized under <span className="font-semibold">{item.category}</span>, opened for bidding at a base price of ₹{item.basePrice.toLocaleString('en-IN')}.
+                    <div className="text-left lg:text-left text-[#EDE4E0] px-4 md:px-16 font-light">
+                        <p className="mb-2 text-sm sm:text-base md:text-lg">
+                            The item <span className="font-semibold">{item.title}</span> categorized under{' '}
+                            <span className="font-semibold">{item.category}</span>, opened for bidding at a base price of ₹
+                            {item.basePrice.toLocaleString('en-IN')}.
                             {winningBidder ? (
                                 <>
-                                    It was successfully sold for ₹{winningBidder.bidAmount.toLocaleString('en-IN')} to the highest bidder, <span className="font-semibold">{winningBidder.name}</span>. Congratulations to <span className="font-semibold">{winningBidder.name}</span> for winning the item on the Auctregal platform!
+                                    {' '}
+                                    It was successfully sold for ₹
+                                    {winningBidder.bidAmount.toLocaleString('en-IN')} to the highest bidder,{' '}
+                                    <span className="font-semibold">{winningBidder.name}</span>. Congratulations to{' '}
+                                    <span className="font-semibold">{winningBidder.name}</span> for winning the item on the
+                                    Auctregal platform!
                                 </>
                             ) : (
-                                <>
-                                    The auction has closed, but information about the winning bidder is not available.
-                                </>
+                                <> The auction has closed, but information about the winning bidder is not available. </>
                             )}
                         </p>
                     </div>
                 </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10 p-8 bg-[#1C0A00] rounded-lg shadow-lg">
+    
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mt-8 md:mt-10 p-6 md:p-8 bg-[#1C0A00] rounded-lg shadow-lg">
                     <div className="flex flex-col justify-center font-thin">
-                        <p className="text-3xl text-[#EDE4E0] mb-4 font-thin">Detailed Item Information</p>
+                        <p className="text-xl sm:text-2xl md:text-3xl text-[#EDE4E0] mb-4 font-thin">Detailed Item Information</p>
                         {renderFields()}
                     </div>
                     <div className="flex flex-col justify-center font-thin">
-                        <p className="text-3xl text-[#EDE4E0] mb-4 font-thin">Auction Information</p>
-                        <p className="text-[#EDE4E0] mb-2">Final Price: ₹{item.currentPrice?.toLocaleString('en-IN') || 'N/A'}</p>
-                        <p className="text-[#EDE4E0] mb-2">Total Bids: {item.bidders?.length || 'N/A'}</p>
-                        <p className="text-[#EDE4E0] mb-2">Auction End Date: {new Date(item.bidEndTime).toLocaleDateString()}</p>
+                        <p className="text-xl sm:text-2xl md:text-3xl text-[#EDE4E0] mb-4 font-thin">Auction Information</p>
+                        <p className="text-sm md:text-base text-[#EDE4E0] mb-2">
+                            Final Price: ₹{item.currentPrice?.toLocaleString('en-IN') || 'N/A'}
+                        </p>
+                        <p className="text-sm md:text-base text-[#EDE4E0] mb-2">
+                            Total Bids: {item.bidders?.length || 'N/A'}
+                        </p>
+                        <p className="text-sm md:text-base text-[#EDE4E0] mb-2">
+                            Auction End Date: {new Date(item.bidEndTime).toLocaleDateString()}
+                        </p>
                         <p className="text-lg text-[#EDE4E0] mt-6">Top 3 Bidders</p>
                         {topThreeBidders.length > 0 ? (
                             <table className="w-full mt-4 border-collapse">
@@ -1083,26 +1244,26 @@ const ItemDetails: React.FC = () => {
                         )}
                     </div>
                 </div>
-
+    
                 {isWinner && renderPaymentSection()}
-
+    
                 {!isWinner && userData.email === winningBidder?.email && (
-                    <div className="mt-10">
-                        <h2 className="text-2xl font-semibold mb-3">Verify Your Win</h2>
+                    <div className="mt-6 md:mt-10">
+                        <h2 className="text-xl md:text-2xl font-semibold mb-3">Verify Your Win</h2>
                         <div className="flex flex-col lg:flex-row gap-4 items-center">
                             <input
                                 type="email"
                                 value={userEmail}
                                 onChange={(e) => setUserEmail(e.target.value)}
                                 placeholder="Enter your email"
-                                className="px-3 py-2 border rounded text-black lg:w-1/3"
+                                className="px-3 py-2 border rounded text-black w-full lg:w-1/3"
                             />
                             <input
                                 type="text"
                                 value={biddingToken}
                                 onChange={(e) => setBiddingToken(e.target.value)}
                                 placeholder="Enter your bidding token"
-                                className="px-3 py-2 border rounded text-black lg:w-1/3"
+                                className="px-3 py-2 border rounded text-black w-full lg:w-1/3"
                             />
                             <button
                                 onClick={handleVerification}
@@ -1116,51 +1277,55 @@ const ItemDetails: React.FC = () => {
             </div>
         );
     };
-
-
+    
 
     const renderPaymentSection = () => (
-        <div className="mt-6">
-
+        <div className="mt-6 px-4 md:px-6 lg:px-10">
+    
             {paymentCompleted ? (
                 <>
-                    <p className='text-center text-[#DCD7C9] text-3xl font-thin'>Transaction Completed</p>
-                    <p className='text-center text-[#DCD7C9] font-thin'>Please tap the button below to activate your slip code.</p>
+                    <p className='text-center text-[#DCD7C9] text-2xl md:text-3xl font-thin'>Transaction Completed</p>
+                    <p className='text-center text-[#DCD7C9] font-thin text-base md:text-lg'>Please tap the button below to activate your slip code.</p>
                     {isWinner && (
-                        <div className="flex justify-center">
+                        <div className="flex justify-center mt-4 md:mt-5">
                             <button
                                 onClick={handleProceedToNext}
-                                className="mt-5 bg-[#DCD7C9] text-[#2C3639] py-2 px-8 rounded-full hover:bg-[#2C3639] hover:text-[#DCD7C9] focus:outline-none transition-colors duration-500"
+                                className="bg-[#DCD7C9] text-[#2C3639] py-2 px-6 md:px-8 rounded-full hover:bg-[#2C3639] hover:text-[#DCD7C9] focus:outline-none transition-colors duration-500"
                             >
                                 Proceed to Next
                             </button>
                         </div>
-
                     )}
                 </>
             ) : paymentSteps.length === 0 ? (
-
-                <div className="flex flex-col justify-center items-center h-full mt-5 gap-5">
+                <div className="flex flex-col justify-center items-center h-full mt-5 gap-4 md:gap-5">
                     <div>
-                        <h2 className="text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
-                        <p className='text-center pr-20 pl-20 text-[#2C3639]'>Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.</p>
+                        <h2 className="text-base md:text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
+                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#2C3639]'>
+                            Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.
+                        </p>
                     </div>
                     <button
                         onClick={handlePayment}
-                        className="bg-[#2C3639] text-[#DCD7C9] py-2 px-8 rounded-full hover:bg-[#DCD7C9] hover:text-[#2C3639] focus:outline-none transition-colors duration-500"
+                        className="bg-[#2C3639] text-[#DCD7C9] py-2 px-6 md:px-8 rounded-full hover:bg-[#DCD7C9] hover:text-[#2C3639] focus:outline-none transition-colors duration-500"
                     >
                         Initiate Payment
                     </button>
                 </div>
-
             ) : (
                 <>
                     <div>
-                        <h2 className="text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
-                        <p className='text-center pr-20 pl-20 text-[#2C3639]'>Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.</p>
+                        <h2 className="text-base md:text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
+                        <p className='text-sm md:text-base text-center pr-4 md:pr-20 pl-4 md:pl-20 text-[#2C3639]'>
+                            Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.
+                        </p>
                     </div>
-                    <p className='text-center pt-8 text-[#2C3639] text-lg'>Payment Step - {currentPaymentStep + 1} of {paymentSteps.length}</p>
-                    <p className='text-center text-[#2C3639] pb-6'>Amount - {formatPrice(paymentSteps[currentPaymentStep].amount)}</p>
+                    <p className='text-center pt-6 md:pt-8 text-[#2C3639] text-lg md:text-xl'>
+                        Payment Step - {currentPaymentStep + 1} of {paymentSteps.length}
+                    </p>
+                    <p className='text-center text-[#2C3639] pb-4 md:pb-6'>
+                        Amount - {formatPrice(paymentSteps[currentPaymentStep].amount)}
+                    </p>
                     <Elements stripe={stripePromise}>
                         <PaymentForm
                             clientSecret={clientSecret}
@@ -1173,40 +1338,233 @@ const ItemDetails: React.FC = () => {
         </div>
     );
 
+
+    // const renderPaymentSection = () => (
+    //     <div className="mt-6">
+
+    //         {paymentCompleted ? (
+    //             <>
+    //                 <p className='text-center text-[#DCD7C9] text-3xl font-thin'>Transaction Completed</p>
+    //                 <p className='text-center text-[#DCD7C9] font-thin'>Please tap the button below to activate your slip code.</p>
+    //                 {isWinner && (
+    //                     <div className="flex justify-center">
+    //                         <button
+    //                             onClick={handleProceedToNext}
+    //                             className="mt-5 bg-[#DCD7C9] text-[#2C3639] py-2 px-8 rounded-full hover:bg-[#2C3639] hover:text-[#DCD7C9] focus:outline-none transition-colors duration-500"
+    //                         >
+    //                             Proceed to Next
+    //                         </button>
+    //                     </div>
+
+    //                 )}
+    //             </>
+    //         ) : paymentSteps.length === 0 ? (
+
+    //             <div className="flex flex-col justify-center items-center h-full mt-5 gap-5">
+    //                 <div>
+    //                     <h2 className="text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
+    //                     <p className='text-center pr-20 pl-20 text-[#2C3639]'>Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.</p>
+    //                 </div>
+    //                 <button
+    //                     onClick={handlePayment}
+    //                     className="bg-[#2C3639] text-[#DCD7C9] py-2 px-8 rounded-full hover:bg-[#DCD7C9] hover:text-[#2C3639] focus:outline-none transition-colors duration-500"
+    //                 >
+    //                     Initiate Payment
+    //                 </button>
+    //             </div>
+
+    //         ) : (
+    //             <>
+    //                 <div>
+    //                     <h2 className="text-lg text-center text-[#2C3639]">Complete Your Purchase</h2>
+    //                     <p className='text-center pr-20 pl-20 text-[#2C3639]'>Please initiate the payment and complete the required steps to proceed to the next stage. Upon completion, you will receive a slip code and QR code to collect your item from the Auctregal headquarters.</p>
+    //                 </div>
+    //                 <p className='text-center pt-8 text-[#2C3639] text-lg'>Payment Step - {currentPaymentStep + 1} of {paymentSteps.length}</p>
+    //                 <p className='text-center text-[#2C3639] pb-6'>Amount - {formatPrice(paymentSteps[currentPaymentStep].amount)}</p>
+    //                 <Elements stripe={stripePromise}>
+    //                     <PaymentForm
+    //                         clientSecret={clientSecret}
+    //                         email={userData.email}
+    //                         onPaymentSuccess={handlePaymentSuccess}
+    //                     />
+    //                 </Elements>
+    //             </>
+    //         )}
+    //     </div>
+    // );
+
+    // const renderCurrentBidding = () => (
+    //     <>
+    //         <div className="flex flex-row justify-between pr-20 pl-20 pt-10">
+    //             <div className="font-thin">
+    //                 <p>Remaining time for bidding on the item</p>
+    //                 <p className="text-lg mt-2"><span className="text-4xl text-red-500 font-thin">{timeLeft}</span></p>
+    //             </div>
+    //             <div>
+    //                 <p className="mt-2 font-thin">Current bid amount for the item</p>
+    //                 <p className="text-4xl font-black flex items-center">
+    //                     {formatPrice(currentPrice)}
+    //                     <GiTakeMyMoney className="ml-2 text-4xl" />
+    //                 </p>
+    //             </div>
+    //         </div>
+
+    //         <div className="flex flex-col items-center pt-8">
+    //             <p className="text-7xl font-thin tracking-tighter">{item.category === 'Vehicles' ? item.make + " " + item.model : (item.category === 'Wine and Spirits' ? item.name : item.title)}</p>
+    //             <p className="pl-32 pr-32 text-center font-thin mt-1">{item.description}</p>
+    //             <p className='font-thin'>{item.category}</p>
+    //         </div>
+
+    //         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 pl-20 pr-20">
+    //             <div>
+    //                 <Image
+    //                     src={item.primaryImage}
+    //                     alt={item.title}
+    //                     width={630}
+    //                     height={450}
+    //                     className="rounded-lg shadow-lg"
+    //                     objectFit="cover"
+    //                     priority={true}
+    //                 />
+    //                 <div className="flex gap-20 mt-6">
+    //                     {item.secondaryImages?.map((image, index) => (
+    //                         <Image
+    //                             key={index}
+    //                             src={image}
+    //                             alt={`Secondary ${index}`}
+    //                             width={150}
+    //                             height={100}
+    //                             className="object-cover cursor-pointer mr-2 mb-2 rounded-lg"
+    //                         />
+    //                     ))}
+    //                 </div>
+    //             </div>
+    //             <div className="flex flex-col items-start">
+    //                 <h2 className="text-2xl font-thin mb-2">Item Overview</h2>
+
+    //                 <div className="w-full text-left font-thin">
+    //                     {renderDescription()}
+    //                 </div>
+    //                 <div>
+    //                     <BiddingForm
+    //                         itemId={item._id}
+    //                         basePrice={item.basePrice}
+    //                         currentPrice={currentPrice}
+    //                         onBidPlaced={handleBidPlaced}
+    //                     />
+    //                 </div>
+    //             </div>
+    //         </div>
+    //         <Instruction />
+
+    //         <div className="mt-10 px-10">
+    //             <h3 className="text-xl text-center mb-4 text-[#DCD7C9] font-thin">Top 3 Recent Bidders</h3>
+    //             <div className="overflow-x-auto">
+    //                 <table className="w-3/6 mx-auto border-collapse">
+    //                     <thead>
+    //                         <tr className="text-left border-b border-gray-200">
+    //                             <th className="px-4 py-2 text-[#DCD7C9] font-thin">Rank</th>
+    //                             <th className="px-4 py-2 text-[#DCD7C9] font-thin">Name</th>
+    //                             <th className="px-4 py-2 text-[#DCD7C9] font-thin">Bid Amount</th>
+    //                         </tr>
+    //                     </thead>
+    //                     <tbody>
+    //                         {item.bidders
+    //                             .sort((a, b) => b.bidAmount - a.bidAmount)
+    //                             .slice(0, 3)
+    //                             .map((bidder, index) => (
+    //                                 <tr key={bidder.userId} className="border-b last:border-none border-gray-200">
+    //                                     <td className="px-4 py-2 text-[#DCD7C9] font-thin">{index + 1}</td>
+    //                                     <td className="px-4 py-2 text-[#DCD7C9] font-thin">{bidder.name}</td>
+    //                                     <td className="px-4 py-2 text-[#DCD7C9] font-thin">{formatPrice(bidder.bidAmount)}</td>
+    //                                 </tr>
+    //                             ))}
+    //                     </tbody>
+    //                 </table>
+    //             </div>
+    //         </div>
+
+
+
+    //         <div className="mt-10 px-20 flex flex-col items-center">
+    //             <h3 className="text-4xl font-thin">Generate Bidding Key</h3>
+    //             <p className='font-thin mb-5'>Please provide your email to continue with the payment process</p>
+    //             {!biddingToken ? (
+    //                 <>
+    //                     <form onSubmit={handleGenerateToken} className="mb-4">
+    //                         <input
+    //                             type="email"
+    //                             value={email}
+    //                             onChange={(e) => setEmail(e.target.value)}
+    //                             placeholder="Enter your email"
+    //                             required
+    //                             className="px-3 py-2 border rounded mr-2 text-black"
+    //                         />
+    //                         <button type="submit" className="bg-orange-800 text-white py-2 px-4 rounded hover:bg-orange-950 focus:outline-none transition-colors duration-500">
+    //                             Generate
+    //                         </button>
+    //                     </form>
+
+    //                     {clientSecret && (
+    //                         <div>
+    //                             <h4 className="text-xl font-semibold mb-2 w-[670px] text-center">Make Payment</h4>
+    //                             <p className="text-lg mb-2 text-center">Amount: {formatPrice(tokenAmount)}</p>
+    //                             <Elements stripe={stripePromise}>
+    //                                 <BiddingPaymentForm
+    //                                     clientSecret={clientSecret}
+    //                                     email={email}
+    //                                     onPaymentBiddingSuccess={handleBiddingPaymentSuccess}
+    //                                 />
+    //                             </Elements>
+    //                         </div>
+    //                     )}
+    //                 </>
+    //             ) : (
+    //                 <p className="text-green-500">Bidding Token: {biddingToken}</p>
+    //             )}
+    //         </div>
+
+    //         <Chatbot item={item} />
+    //     </>
+    // );
+
+
     const renderCurrentBidding = () => (
         <>
-            <div className="flex flex-row justify-between pr-20 pl-20 pt-10">
-                <div className="font-thin">
-                    <p>Remaining time for bidding on the item</p>
-                    <p className="text-lg mt-2"><span className="text-4xl text-red-500 font-thin">{timeLeft}</span></p>
+            <div className="flex flex-col md:flex-row justify-between px-4 md:px-6 lg:px-10 pt-6 md:pt-10">
+                <div className="font-thin mb-4 md:mb-0 text-center md:text-left">
+                    <p className="text-base md:text-lg">Remaining time for bidding on the item</p>
+                    <p className="text-2xl md:text-4xl text-red-500 font-thin">{timeLeft}</p>
                 </div>
-                <div>
-                    <p className="mt-2 font-thin">Current bid amount for the item</p>
-                    <p className="text-4xl font-black flex items-center">
+                <div className="text-center md:text-left">
+                    <p className="text-base md:text-lg mb-2">Current bid amount for the item</p>
+                    <p className="text-2xl md:text-4xl font-black flex items-center justify-center md:justify-start">
                         {formatPrice(currentPrice)}
-                        <GiTakeMyMoney className="ml-2 text-4xl" />
+                        <GiTakeMyMoney className="ml-2 text-2xl md:text-4xl" />
                     </p>
                 </div>
             </div>
-
-            <div className="flex flex-col items-center pt-8">
-                <p className="text-7xl font-thin tracking-tighter">{item.category === 'Vehicles' ? item.make + " " + item.model : (item.category === 'Wine and Spirits' ? item.name : item.title)}</p>
-                <p className="pl-32 pr-32 text-center font-thin mt-1">{item.description}</p>
-                <p className='font-thin'>{item.category}</p>
+    
+            <div className="flex flex-col items-center pt-6 md:pt-8 px-4 md:px-6 lg:px-10">
+                <p className="text-2xl md:text-4xl font-thin tracking-tighter text-center mb-2">
+                    {item.category === 'Vehicles' ? `${item.make} ${item.model}` : (item.category === 'Wine and Spirits' ? item.name : item.title)}
+                </p>
+                <p className='text-sm md:text-base pl-4 md:pl-20 pr-4 md:pr-20 text-center font-thin mb-4'>{item.description}</p>
+                <p className='font-thin text-center'>{item.category}</p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 pl-20 pr-20">
-                <div>
+    
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6 md:mt-10 px-4 md:px-6 lg:px-10">
+                <div className="flex flex-col items-center">
                     <Image
                         src={item.primaryImage}
                         alt={item.title}
-                        width={630}
-                        height={450}
+                        width={600}
+                        height={400}
                         className="rounded-lg shadow-lg"
                         objectFit="cover"
                         priority={true}
                     />
-                    <div className="flex gap-20 mt-6">
+                    <div className="flex gap-4 md:gap-6 mt-4 md:mt-6 overflow-x-auto">
                         {item.secondaryImages?.map((image, index) => (
                             <Image
                                 key={index}
@@ -1214,14 +1572,14 @@ const ItemDetails: React.FC = () => {
                                 alt={`Secondary ${index}`}
                                 width={150}
                                 height={100}
-                                className="object-cover cursor-pointer mr-2 mb-2 rounded-lg"
+                                className="object-cover cursor-pointer rounded-lg"
                             />
                         ))}
                     </div>
                 </div>
                 <div className="flex flex-col items-start">
-                    <h2 className="text-2xl font-thin mb-2">Item Overview</h2>
-
+                    <h2 className="text-xl md:text-2xl font-thin mb-2">Item Overview</h2>
+    
                     <div className="w-full text-left font-thin">
                         {renderDescription()}
                     </div>
@@ -1236,16 +1594,16 @@ const ItemDetails: React.FC = () => {
                 </div>
             </div>
             <Instruction />
-
-            <div className="mt-10 px-10">
-                <h3 className="text-xl text-center mb-4 text-[#DCD7C9] font-thin">Top 3 Recent Bidders</h3>
+    
+            <div className="mt-6 md:mt-10 px-4 md:px-6 lg:px-10">
+                <h3 className="text-lg md:text-xl text-center mb-4 text-[#DCD7C9] font-thin">Top 3 Recent Bidders</h3>
                 <div className="overflow-x-auto">
-                    <table className="w-3/6 mx-auto border-collapse">
+                    <table className="w-full border-collapse">
                         <thead>
                             <tr className="text-left border-b border-gray-200">
-                                <th className="px-4 py-2 text-[#DCD7C9] font-thin">Rank</th>
-                                <th className="px-4 py-2 text-[#DCD7C9] font-thin">Name</th>
-                                <th className="px-4 py-2 text-[#DCD7C9] font-thin">Bid Amount</th>
+                                <th className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">Rank</th>
+                                <th className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">Name</th>
+                                <th className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">Bid Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1254,41 +1612,39 @@ const ItemDetails: React.FC = () => {
                                 .slice(0, 3)
                                 .map((bidder, index) => (
                                     <tr key={bidder.userId} className="border-b last:border-none border-gray-200">
-                                        <td className="px-4 py-2 text-[#DCD7C9] font-thin">{index + 1}</td>
-                                        <td className="px-4 py-2 text-[#DCD7C9] font-thin">{bidder.name}</td>
-                                        <td className="px-4 py-2 text-[#DCD7C9] font-thin">{formatPrice(bidder.bidAmount)}</td>
+                                        <td className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">{index + 1}</td>
+                                        <td className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">{bidder.name}</td>
+                                        <td className="px-2 py-1 md:px-4 md:py-2 text-[#DCD7C9] font-thin">{formatPrice(bidder.bidAmount)}</td>
                                     </tr>
                                 ))}
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
-
-            <div className="mt-10 px-20 flex flex-col items-center">
-                <h3 className="text-4xl font-thin">Generate Bidding Key</h3>
-                <p className='font-thin mb-5'>Please provide your email to continue with the payment process</p>
+    
+            <div className="mt-6 md:mt-10 px-4 md:px-6 lg:px-10 flex flex-col items-center">
+                <h3 className="text-2xl md:text-4xl font-thin mb-4">Generate Bidding Key</h3>
+                <p className='text-base md:text-lg font-thin mb-4'>Please provide your email to continue with the payment process</p>
                 {!biddingToken ? (
                     <>
-                        <form onSubmit={handleGenerateToken} className="mb-4">
+                        <form onSubmit={handleGenerateToken} className="flex flex-col items-center mb-4 w-full max-w-sm">
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
                                 required
-                                className="px-3 py-2 border rounded mr-2 text-black"
+                                className="px-3 py-2 border rounded text-black mb-2 w-full"
                             />
-                            <button type="submit" className="bg-orange-800 text-white py-2 px-4 rounded hover:bg-orange-950 focus:outline-none transition-colors duration-500">
+                            <button type="submit" className="bg-orange-800 text-white py-2 px-4 rounded hover:bg-orange-950 focus:outline-none transition-colors duration-500 w-full">
                                 Generate
                             </button>
                         </form>
-
+    
                         {clientSecret && (
-                            <div>
-                                <h4 className="text-xl font-semibold mb-2 w-[670px] text-center">Make Payment</h4>
-                                <p className="text-lg mb-2 text-center">Amount: {formatPrice(tokenAmount)}</p>
+                            <div className="text-center">
+                                <h4 className="text-lg md:text-xl font-semibold mb-2">Make Payment</h4>
+                                <p className="text-base md:text-lg mb-2">Amount: {formatPrice(tokenAmount)}</p>
                                 <Elements stripe={stripePromise}>
                                     <BiddingPaymentForm
                                         clientSecret={clientSecret}
@@ -1303,10 +1659,11 @@ const ItemDetails: React.FC = () => {
                     <p className="text-green-500">Bidding Token: {biddingToken}</p>
                 )}
             </div>
-
+    
             <Chatbot item={item} />
         </>
     );
+    
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -1343,15 +1700,3 @@ const categoryFields: { [key: string]: string[] } = {
     'Rare Books and Manuscripts': ['Title', 'Author', 'Year', 'Condition', 'Edition', 'Publisher', 'Language'],
     'Collectables': ['Title', 'Type', 'Era', 'Condition', 'Rarity', 'Manufacturer'],
 };
-
-
-
-
-
-
-
-
-
-
-
-
