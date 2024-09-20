@@ -196,9 +196,13 @@ export function FeaturedAuction() {
                                     <Image
                                         src={item.primaryImage}
                                         alt={item.title || item.name || item.make || ''}
-                                        layout="fill"
+                                        width={400}
+                                        height={300}
                                         objectFit="cover"
                                         className="transition-opacity duration-500 ease-in-out"
+                                        onError={(e) => {
+                                            e.currentTarget.src = '/fallback-image.jpg' // Replace with your fallback image path
+                                        }}
                                     />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                         <h2 className="text-lg sm:text-xl font-thin mb-2">
