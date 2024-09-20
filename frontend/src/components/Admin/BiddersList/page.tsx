@@ -66,7 +66,7 @@ const BiddersList = () => {
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Email</th>
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Score</th>
                             <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Status</th>
-                            <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Actions</th>
+                            {/* <th className="py-3 px-4 text-left text-sm font-medium text-gray-400">Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -78,14 +78,14 @@ const BiddersList = () => {
                                 <td className="py-3 px-4 text-sm text-gray-400">
                                     {bidder.isBlocked ? 'Blocked' : 'Active'}
                                 </td>
-                                <td className="py-3 px-4 text-sm">
+                                {/* <td className="py-3 px-4 text-sm">
                                     <button
                                         className={`w-24 py-2 rounded ${bidder.isBlocked ? 'bg-red-950 text-white' : 'bg-green-950 text-white'}`}
                                         onClick={() => toggleBlockBidder(bidder._id, bidder.isBlocked)}
                                     >
                                         {bidder.isBlocked ? 'Unblock' : 'Block'}
                                     </button>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
