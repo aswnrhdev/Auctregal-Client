@@ -138,12 +138,18 @@ export function FeaturedAuction() {
     useEffect(() => {
         const fetchItems = async () => {
             try {
+                console.log('Fetching items...');
                 const response = await fetch('https://auctregal.rudopedia.shop/items/bidding');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }
                 const data = await response.json();
-                setItems(data);
+                console.log('Fetched data:', data);
+                if (Array.isArray(data)) {
+                    setItems(data);
+                } else {
+                    console.error('Fetched data is not an array:', data);
+                }
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
