@@ -1,7 +1,7 @@
 // /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['trippotravel.s3.ap-south-1.amazonaws.com'], // Add the S3 domain here
+      domains: ['trippotravel.s3.eu-north-1.amazonaws.com'], // Add the S3 domain here
     },
   };
   
