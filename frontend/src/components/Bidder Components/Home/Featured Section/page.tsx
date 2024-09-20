@@ -208,7 +208,7 @@ export function FeaturedAuction() {
                             <div key={item._id} className="relative flex items-center justify-center cursor-pointer px-2">
                                 <div className="relative w-full h-[300px] sm:h-[400px] overflow-hidden rounded-lg shadow-lg">
                                     <Image
-                                        src={item.primaryImage}
+                                        src={`https://auctregal.s3.eu-north-1.amazonaws.com/${item.primaryImage}`}
                                         alt={item.title || item.name || item.make || ''}
                                         layout="fill"
                                         objectFit="cover"
