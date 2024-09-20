@@ -114,15 +114,15 @@ import Image from 'next/image';
 const ITEMS_PER_PAGE = 6;
 
 interface Item {
-  _id: string;
-  primaryImage: string;
-  title?: string;
-  name?: string;
-  make?: string;
-  model?: string;
-  description: string;
-  category: string;
-  currentPrice: number;
+    _id: string;
+    primaryImage: string;
+    title?: string;
+    name?: string;
+    make?: string;
+    model?: string;
+    description: string;
+    category: string;
+    currentPrice: number;
 }
 
 export function CurrentBidding() {
@@ -174,13 +174,11 @@ export function CurrentBidding() {
                 {currentItems.map((item) => (
                     <Link href={`/auction/${item._id}`} key={item._id}>
                         <div className="relative overflow-hidden rounded-lg shadow-lg h-[300px] sm:h-[350px] lg:h-[400px]">
-                            <Image
+                            <img
                                 src={item.primaryImage}
-                                alt={item.title || item.name || `${item.make} ${item.model}`}
-                                fill
-                                style={{ objectFit: "cover" }}
+                                alt={item.title || item.name || `${item.make} ${item.model}` || 'Image'}
                                 className="opacity-70"
-                                priority
+                                style={{ objectFit: "cover", width: "100%", height: "100%" }}
                             />
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                 <h2 className="text-lg sm:text-xl md:text-2xl font-thin">

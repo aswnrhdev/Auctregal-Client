@@ -332,14 +332,14 @@ const CheckoutContent: React.FC = () => {
                 <hr className="border-t border-gray-300" />
                 <p>{checkoutData.itemData.category}</p>
                 {checkoutData.itemData.primaryImage && (
-                  <Image
-                    src={checkoutData.itemData.primaryImage}
-                    alt={checkoutData.itemData.title}
-                    width={640}
-                    height={160}
-                    className="object-cover rounded-lg"
-                    priority={true}
-                  />
+                  <img
+                  src={checkoutData.itemData.primaryImage}
+                  alt={checkoutData.itemData.title}
+                  width={640}
+                  height={160}
+                  className="object-cover rounded-lg"
+                  style={{ objectFit: "cover" }}
+                />                
                 )}
                 <p>Base Price - <span className="text-blue-500">{formatCurrency(checkoutData.itemData.basePrice)}</span></p>
                 <p>Current Price - <span className="text-green-500">{formatCurrency(checkoutData.itemData.currentPrice)}</span></p>

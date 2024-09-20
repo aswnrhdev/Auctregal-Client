@@ -422,7 +422,8 @@ const UserInformation = () => {
                             <label htmlFor='profile-image' className={`cursor-pointer ${!isEditing ? 'pointer-events-none' : ''}`}>
                                 <div className='w-24 h-24 rounded-full border-2 border-[#DCD7C9] flex items-center justify-center overflow-hidden'>
                                     {image ? (
-                                        <Image src={image} alt='Profile' width={96} height={96} objectFit="cover" />
+                                        <img src={image} alt="Profile" width={96} height={96} style={{ objectFit: "cover" }} />
+
                                     ) : (
                                         <span className='text-xs sm:text-sm'>Upload Image</span>
                                     )}

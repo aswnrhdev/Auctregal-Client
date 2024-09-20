@@ -153,7 +153,7 @@ const Section = () => {
                 console.error('Error fetching items:', error);
             }
         };
-    
+
         fetchItems();
     }, []);
 
@@ -197,13 +197,11 @@ const Section = () => {
                     {items.map((item) => (
                         <div key={item._id} className="relative flex items-center justify-center cursor-pointer px-2">
                             <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden rounded-lg shadow-lg">
-                                <Image
+                                <img
                                     src={item.primaryImage}
                                     alt={item.title || item.name || item.make || 'Image'}
-                                    layout="fill"
-                                    objectFit="cover"
                                     className="opacity-70"
-                                    priority
+                                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
                                 />
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                     <h2 className="text-lg sm:text-xl md:text-2xl font-thin mb-2">

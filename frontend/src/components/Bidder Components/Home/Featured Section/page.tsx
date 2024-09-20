@@ -158,15 +158,6 @@ export function FeaturedAuction() {
         fetchItems();
     }, []);
 
-    // const cleanImageUrl = (url: string) => {
-    //     const s3Prefix = 'https://auctregal.s3.eu-north-1.amazonaws.com/';
-    //     if (url.startsWith(s3Prefix + s3Prefix)) {
-    //         return url.replace(s3Prefix + s3Prefix, s3Prefix);
-    //     }
-    //     return url;
-    // };
-
-
     const settings = {
         infinite: true,
         speed: 3000,
