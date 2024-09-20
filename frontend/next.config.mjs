@@ -13,13 +13,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'trippotravel.s3.eu-north-1.amazonaws.com',
+        hostname: 'auctregal.s3.eu-north-1.amazonaws.com',
         pathname: '/**',
       },
     ],
     // Optional: increase the default image loader timeout
     loader: 'default',
-    domains: ['trippotravel.s3.eu-north-1.amazonaws.com'],
+    domains: ['auctregal.s3.eu-north-1.amazonaws.com'],
   },
 };
 
