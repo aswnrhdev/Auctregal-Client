@@ -208,12 +208,12 @@ export function FeaturedAuction() {
                         {items.map((item) => (
                             <div key={item._id} className="relative flex items-center justify-center cursor-pointer px-2">
                                 <div className="relative w-full h-[300px] sm:h-[400px] overflow-hidden rounded-lg shadow-lg">
-                                    <Image
+                                    <img
                                         src={cleanImageUrl(item.primaryImage)}
                                         alt={item.title || item.name || item.make || ''}
-                                        layout="fill"
-                                        objectFit="cover"
-                                        className="transition-opacity duration-500 ease-in-out"
+                                        width={2048}
+                                        height={1536}
+                                        style={{ objectFit: 'cover' }} // Optional styling
                                     />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-black bg-opacity-50 text-white z-10">
                                         <h2 className="text-lg sm:text-xl font-thin mb-2">
