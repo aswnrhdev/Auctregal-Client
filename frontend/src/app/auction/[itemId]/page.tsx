@@ -746,7 +746,7 @@ interface PaymentHistory {
     paidAt: string;
 }
 
-const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+const stripePromise = loadStripe("pk_test_51OT0m1SBqQNmRFp2b1HOsHjUjMB7f2ht4EnZ5saT9hXCq5xjH61VvvMm49AH34T5aLELQ8FuavwoUzP57ClDkv6l00VlNLXNGv");
 
 const ItemDetails: React.FC = () => {
     const [item, setItem] = useState<Item | null>(null);
@@ -1642,9 +1642,9 @@ const ItemDetails: React.FC = () => {
                         </form>
     
                         {clientSecret && (
-                            <div className="text-center">
-                                <h4 className="text-lg md:text-xl font-semibold mb-2">Make Payment</h4>
-                                <p className="text-base md:text-lg mb-2">Amount: {formatPrice(tokenAmount)}</p>
+                            <div>
+                                <h4 className="text-xl font-semibold mb-2 w-[670px] text-center">Make Payment</h4>
+                                <p className="text-lg mb-2 text-center">Amount: {formatPrice(tokenAmount)}</p>
                                 <Elements stripe={stripePromise}>
                                     <BiddingPaymentForm
                                         clientSecret={clientSecret}
