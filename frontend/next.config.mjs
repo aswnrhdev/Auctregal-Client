@@ -1,11 +1,11 @@
-// /** @type {import('next').NextConfig} */
-const nextConfig = {
-    images: {
-      domains: ['trippotravel.s3.eu-north-1.amazonaws.com'], // Add the S3 domain here
-    },
-  };
+/** @type {import('next').NextConfig} */
+// const nextConfig = {
+//     images: {
+//       domains: ['auctregal.s3.eu-north-1.amazonaws.com'], // Add the S3 domain here
+//     },
+//   };
   
-  export default nextConfig;
+//   export default nextConfig;
   
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
