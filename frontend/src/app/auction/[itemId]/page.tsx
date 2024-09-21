@@ -1371,7 +1371,7 @@ const ItemDetails: React.FC = () => {
                     </>
                 ) : (
                     // <p className="text-green-500">Bidding Token: {biddingToken}</p>
-                    <div className='text-center'>
+                    <div className='text-center mb-10'>
                         <h1 className='font-thin text-lg sm:text-xl md:text-2xl'>Your Bidding Token is given below</h1>
                         <div className='flex justify-center items-center mt-2'>
                             <p className='font-normal text-green-500 mr-2 text-sm sm:text-base'>Bidding Token: {biddingToken}</p>
