@@ -709,6 +709,7 @@ import PaymentForm from '@/components/Bidder Components/Auction Details Page/Pay
 import { GiTakeMyMoney } from "react-icons/gi";
 import Image from 'next/image';
 import Swal from 'sweetalert2';
+import { FaCopy } from 'react-icons/fa';
 
 // Define types for your data structures
 interface Item {
@@ -1007,6 +1008,25 @@ const ItemDetails: React.FC = () => {
             );
         });
     };
+
+    const handleCopyToken = () => {
+        navigator.clipboard.writeText(biddingToken || '');
+
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            text: 'Bidding Token copied to your clipboard!',
+            showConfirmButton: false,
+            timer: 2000,
+            background: 'black',
+            color: 'white',
+            customClass: {
+                popup: 'swal-toast',
+                title: 'swal-toast-title'
+            }
+        });
+    };
+
 
     const renderDescription = () => {
         const fields = categoryFields[item.category] || [];
@@ -1350,7 +1370,17 @@ const ItemDetails: React.FC = () => {
                         )}
                     </>
                 ) : (
-                    <p className="text-green-500">Bidding Token: {biddingToken}</p>
+                    // <p className="text-green-500">Bidding Token: {biddingToken}</p>
+                    <div className='text-center'>
+                        <h1 className='font-thin text-lg sm:text-xl md:text-2xl'>Your Bidding Token is given below</h1>
+                        <div className='flex justify-center items-center mt-2'>
+                            <p className='font-normal text-green-500 mr-2 text-sm sm:text-base'>Bidding Token: {biddingToken}</p>
+                            <button onClick={handleCopyToken} className='text-green-500'>
+                                <FaCopy size={15} />
+                            </button>
+                        </div>
+                    </div>
+
                 )}
             </div>
 
