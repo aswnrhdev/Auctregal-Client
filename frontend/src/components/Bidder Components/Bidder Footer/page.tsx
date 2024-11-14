@@ -1,31 +1,3 @@
-
-
-// import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
-// import { SiGmail } from "react-icons/si";
-
-// export const Footer = () => {
-//   return (
-//     <footer className="bg-[#DCD7C9] text-[#2C3639] p-8 w-full font-sans flex flex-col items-center gap-4">
-//       <div className="text-center">
-//         <p className="text-sm">info@auctregal</p>
-//         <div className="flex gap-4 mt-4 text-xl justify-center">
-//           <FaInstagram />
-//           <FaTwitter />
-//           <SiGmail />
-//           <FaTelegramPlane />
-//         </div>
-//         <p className="text-sm mt-4">© {new Date().getFullYear()} Auctregal. All rights reserved.</p>
-//         {/* <p className="text-sm mt-4">
-//           © {new Date().getFullYear()} Auctregal. All rights reserved. 
-//           <a href="/terms" className="text-gray-300 hover:underline ml-1">Terms & Conditions</a>
-//         </p> */}
-//       </div>
-//     </footer>
-//   )
-// }
-
-
-
 import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 

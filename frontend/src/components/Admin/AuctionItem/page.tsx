@@ -89,9 +89,9 @@ const ItemTable: React.FC<ItemTableProps> = ({ category, items, onSetUpcoming, o
                                             className="w-full bg-[#1A120B] text-white p-2 rounded font-thin"
                                         >
                                             <option value="">Add to Bid</option>
-                                            <option value="4">4 days</option>
                                             <option value="5">5 days</option>
-                                            <option value="6">6 days</option>
+                                            <option value="15">15 days</option>
+                                            <option value="30">30 days</option>
                                         </select>
                                     </td>
                                 </>

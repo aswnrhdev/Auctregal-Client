@@ -29,7 +29,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ email, name, onPaymentSucce
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/create-payment-intent', { email, name });
+      const response = await axios.post('https://auctregal.rudopedia.shop/create-payment-intent', { email, name });
       const clientSecret = response.data.clientSecret;
 
       const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -44,7 +44,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ email, name, onPaymentSucce
       } else {
         setSucceeded(true);
         setAuctCode(response.data.auctCode);
-        await axios.post('http://localhost:5000/update-wallet', { email });
+        await axios.post('https://auctregal.rudopedia.shop/update-wallet', { email });
         onPaymentSuccess(response.data.auctCode);
       }
     } catch (error: any) {
